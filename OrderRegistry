@@ -1,0 +1,30 @@
+package model;
+import java.util.*;
+
+public class OrderRegistry {
+	
+	private HashMap <Integer, Order> oRegistry;
+	// Skapar en variabel av klassen HashMap som heter oRegistry, som ska användas för att hålla Orders.
+
+	public OrderRegistry() {
+		setoRegistry(new HashMap <Integer, Order>());
+	}
+	// Skapar ett objekt av klassen HashMap.
+
+	
+	
+	public HashMap <Integer, Order> getoRegistry() {
+		return oRegistry;
+	}
+	public void setoRegistry(HashMap <Integer, Order> oRegistry) {
+		this.oRegistry = oRegistry;
+	}
+	// Set & Get metoder för orderregistret.
+
+	
+	public void addOrder (Order aOrder){
+		oRegistry.put(aOrder.getOrderNr(), aOrder);
+	}
+	// Metod för att lägga till ett objekt av klassen Order, in i orderregistret.
+	
+	}
