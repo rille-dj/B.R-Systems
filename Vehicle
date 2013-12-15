@@ -1,0 +1,66 @@
+package model;
+
+public class Vehicle {
+	
+	private String regNr;
+	private String vehicleType;
+	private String brand;
+	private String model;
+	private String modelYear;
+	private String location;
+	private double vehiclePrice;
+	
+	public Vehicle (String regNr, String vehicleType, String brand, String model, String modelYear, String location, double vehiclePrice) {
+		setRegNr(regNr);
+		setVehicleType(vehicleType);
+		setBrand(brand);
+		setModel(model);
+		setModelYear(modelYear);
+		setLocation(location);
+		setVehiclePrice(vehiclePrice);
+	}
+	
+	
+	public String getRegNr() {
+		return regNr;
+	}
+	public void setRegNr(String regNr) {
+		this.regNr = regNr;
+	}
+	public String getVehicleType() {
+		return vehicleType;
+	}
+	public void setVehicleType(String vehicleType) {
+		this.vehicleType = vehicleType;
+	}
+	public String getBrand() {
+		return brand;
+	}
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+	public String getModel() {
+		return model;
+	}
+	public void setModel(String model) {
+		this.model = model;
+	}
+	public String getModelYear() {
+		return modelYear;
+	}
+	public void setModelYear(String modelYear) {
+		this.modelYear = modelYear;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	public double getVehiclePrice() {
+		return vehiclePrice;
+	}
+	public void setVehiclePrice(double vehiclePrice) {
+		this.vehiclePrice = vehiclePrice;
+	}
+}
