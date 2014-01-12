@@ -1,48 +1,37 @@
 package viewer;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.Document;
 
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
-import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
-import java.util.Date;
-
+import model.Customer;
 import model.Order;
 import model.Vehicle;
-import model.VehicleRegistry;
 
 import javax.swing.JTable;
-
-
+import javax.swing.JSeparator;
 
 public class GUI extends JFrame {
-	
+
 	JTabbedPane jtp = new JTabbedPane();
-	
+
 	private controller.Controller controller = new controller.Controller();
 	private JTextField txtSearchCustomer;
 	private JTextField txtCustomerNrNewOrder;
@@ -86,196 +75,232 @@ public class GUI extends JFrame {
 	private JTextField txtOrderDateViewOrder;
 	private JTextField txtListPrice;
 	private JTextField txtDiscountPrice;
-	
-    public GUI() {
-        
-        super("Bihl & Rulle Rental Systems");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 600, 533);
-		setLocationRelativeTo(null);
-        getContentPane().add(jtp);
-        setVisible(true);
-       
-      
 
-        
-        controller.createTestObjects();
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        //Kund
-       
-        JPanel pnlCustomer = new JPanel();
-        pnlCustomer.setLayout(null);
-        jtp.addTab("Kund", pnlCustomer);
-        
-        txtSearchCustomer = new JTextField();
+	public GUI() {
+
+		super("Bihl & Rulle Rental Systems");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 586, 533);
+		setLocationRelativeTo(null);
+		getContentPane().add(jtp);
+		setVisible(true);
+		setResizable(false);
+
+		controller.createTestObjects();
+
+		
+		
+		
+		
+		
+		
+		
+		
+		// Kund
+
+		JPanel pnlCustomer = new JPanel();
+		pnlCustomer.setLayout(null);
+		jtp.addTab("Kund", pnlCustomer);
+
+		txtSearchCustomer = new JTextField();
 		txtSearchCustomer.setBounds(12, 42, 116, 22);
 		pnlCustomer.add(txtSearchCustomer);
 		txtSearchCustomer.setColumns(10);
-		
-		txtCustomerNr= new JTextField();
+
+		txtCustomerNr = new JTextField();
 		txtCustomerNr.setEditable(false);
 		txtCustomerNr.setText(Integer.toString(controller.getCustomerRegistrySize()));
 		txtCustomerNr.setBounds(12, 163, 116, 22);
 		pnlCustomer.add(txtCustomerNr);
 		txtCustomerNr.setColumns(10);
-		
+
 		txtFirstName = new JTextField();
 		txtFirstName.setBounds(12, 227, 116, 22);
 		pnlCustomer.add(txtFirstName);
 		txtFirstName.setColumns(10);
-		
+
 		txtLastName = new JTextField();
 		txtLastName.setBounds(140, 227, 116, 22);
 		pnlCustomer.add(txtLastName);
 		txtLastName.setColumns(10);
-		
+
 		txtStreetAddress = new JTextField();
 		txtStreetAddress.setBounds(320, 227, 244, 22);
 		pnlCustomer.add(txtStreetAddress);
 		txtStreetAddress.setColumns(10);
-		
+
 		txtZipCode = new JTextField();
 		txtZipCode.setBounds(320, 291, 116, 22);
 		pnlCustomer.add(txtZipCode);
 		txtZipCode.setColumns(10);
-		
+
 		txtCity = new JTextField();
 		txtCity.setBounds(448, 291, 116, 22);
 		pnlCustomer.add(txtCity);
 		txtCity.setColumns(10);
-		
+
 		txtCountry = new JTextField();
 		txtCountry.setBounds(320, 355, 244, 22);
 		pnlCustomer.add(txtCountry);
 		txtCountry.setColumns(10);
-		
+
 		txtPhoneNumber = new JTextField();
 		txtPhoneNumber.setBounds(12, 291, 244, 22);
 		pnlCustomer.add(txtPhoneNumber);
 		txtPhoneNumber.setColumns(10);
-		
+
 		txtEmailAddress = new JTextField();
 		txtEmailAddress.setBounds(12, 355, 244, 22);
 		pnlCustomer.add(txtEmailAddress);
 		txtEmailAddress.setColumns(10);
-		
+
 		txtDiscount = new JTextField();
 		txtDiscount.setBounds(140, 163, 116, 22);
 		pnlCustomer.add(txtDiscount);
 		txtDiscount.setColumns(10);
-		
-		JLabel lblSearchCustomer = new JLabel("Sök kund");
-		lblSearchCustomer.setBounds(12, 13, 56, 16);
+
+		JLabel lblSearchCustomer = new JLabel("Sök kundnummer");
+		lblSearchCustomer.setBounds(12, 13, 116, 16);
 		pnlCustomer.add(lblSearchCustomer);
-		
+
 		JLabel lblCustomerNr = new JLabel("Kundnummer");
 		lblCustomerNr.setBounds(12, 134, 116, 16);
 		pnlCustomer.add(lblCustomerNr);
-		
+
 		lblFirstName = new JLabel("Förnamn");
 		lblFirstName.setBounds(12, 198, 116, 16);
 		pnlCustomer.add(lblFirstName);
-		
+
 		lblLastName = new JLabel("Efternamn");
 		lblLastName.setBounds(140, 198, 116, 16);
 		pnlCustomer.add(lblLastName);
-		
+
 		lblStreetAddress = new JLabel("Adress");
 		lblStreetAddress.setBounds(320, 198, 116, 16);
 		pnlCustomer.add(lblStreetAddress);
-		
+
 		lblPhoneNumber = new JLabel("Telefonnummer");
 		lblPhoneNumber.setBounds(12, 262, 116, 16);
 		pnlCustomer.add(lblPhoneNumber);
-		
+
 		lblZipCode = new JLabel("Postnummer");
 		lblZipCode.setBounds(320, 262, 116, 16);
 		pnlCustomer.add(lblZipCode);
-		
+
 		lblEmailAddress = new JLabel("Epostadress");
 		lblEmailAddress.setBounds(12, 326, 116, 16);
 		pnlCustomer.add(lblEmailAddress);
-		
+
 		lblDiscount = new JLabel("Procentrabatt");
 		lblDiscount.setBounds(140, 134, 116, 16);
 		pnlCustomer.add(lblDiscount);
-		
+
 		lblCity = new JLabel("Ort");
 		lblCity.setBounds(448, 262, 116, 16);
 		pnlCustomer.add(lblCity);
-		
+
 		lblCountry = new JLabel("Land");
 		lblCountry.setBounds(320, 326, 116, 16);
 		pnlCustomer.add(lblCountry);
-	
+
 		JButton btnSearchCustomer = new JButton("Sök");
 		btnSearchCustomer.setBounds(140, 41, 116, 25);
 		pnlCustomer.add(btnSearchCustomer);
 		btnSearchCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				model.Customer tmp = controller.findCustomer(Integer.parseInt(txtSearchCustomer.getText()));
-				if (tmp != null){
-					txtCustomerNr.setText(Integer.toString(tmp.getCustomerNr()));
-					txtDiscount.setText(Double.toString(tmp.getDiscountPercentage()));
-					txtFirstName.setText(tmp.getFirstName());
-					txtLastName.setText(tmp.getLastName());
-					txtPhoneNumber.setText(tmp.getPhoneNr());
-					txtEmailAddress.setText(tmp.getEmailAddress());
-					txtStreetAddress.setText(tmp.getStreetAdress());
-					txtZipCode.setText(tmp.getZipCode());
-					txtCity.setText(tmp.getCity());
-					txtCountry.setText(tmp.getCountry());	
+				boolean cnumber = true;
+
+				if ((cnumber == intIsNotParseable(txtSearchCustomer.getText())) || (txtSearchCustomer.getText().trim().length() < 1)) {
+					JOptionPane.showMessageDialog(null,	"Vänligen ange kundnummer (i sifferformat)", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
 				}
+				
 				else {
-					JOptionPane.showMessageDialog(null, "Kunden finns inte. Försök igen.", "Felmeddelande", JOptionPane.ERROR_MESSAGE);	
+					model.Customer tmp = controller.findCustomer(Integer.parseInt(txtSearchCustomer.getText()));
+					
+					if (tmp != null) {
+						txtCustomerNr.setText(Integer.toString(tmp.getCustomerNr()));
+						txtDiscount.setText(Double.toString(tmp.getDiscountPercentage()));
+						txtFirstName.setText(tmp.getFirstName());
+						txtLastName.setText(tmp.getLastName());
+						txtPhoneNumber.setText(tmp.getPhoneNr());
+						txtEmailAddress.setText(tmp.getEmailAddress());
+						txtStreetAddress.setText(tmp.getStreetAdress());
+						txtZipCode.setText(tmp.getZipCode());
+						txtCity.setText(tmp.getCity());
+						txtCountry.setText(tmp.getCountry());
+					}
+
+					else {
+						JOptionPane.showMessageDialog(null, "Kunden finns inte. Försök igen.", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+					}
 				}
+
 			}
 		});
-		
+
 		JButton btnClearCustomer = new JButton("Rensa formulär");
 		btnClearCustomer.setBounds(388, 418, 176, 25);
 		pnlCustomer.add(btnClearCustomer);
 		btnClearCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearCustomer();
+				txtCustomerNr.setText(Integer.toString(controller.getCustomerRegistrySize()));
 			}
 		});
-		
+
 		JButton btnCreateCustomer = new JButton("Spara kund");
 		btnCreateCustomer.setBounds(12, 418, 176, 25);
 		pnlCustomer.add(btnCreateCustomer);
 		btnCreateCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controller.addCustomer(Integer.parseInt(txtCustomerNr.getText()), txtFirstName.getText(), txtLastName.getText(), txtStreetAddress.getText(), txtZipCode.getText(), txtCity.getText(), txtCountry.getText(), txtPhoneNumber.getText(), txtEmailAddress.getText(), Double.parseDouble(txtDiscount.getText()));
-				clearCustomer();
-				txtCustomerNr.setText(Integer.toString(controller.getCustomerRegistrySize()));
+
+				boolean cdiscount = true;
+
+				if (cdiscount == doubleIsNotParseable(txtDiscount.getText())) {
+					JOptionPane.showMessageDialog(null,	"Vänligen ange procentrabatt (i sifferformat)",
+							"Felmeddelande", JOptionPane.ERROR_MESSAGE);
+				} else if (txtCustomerNr.getText().trim().length() > 0
+						&& txtFirstName.getText().trim().length() > 0
+						&& txtLastName.getText().trim().length() > 0
+						&& txtStreetAddress.getText().trim().length() > 0
+						&& txtZipCode.getText().trim().length() > 0
+						&& txtCity.getText().trim().length() > 0
+						&& txtCountry.getText().trim().length() > 0
+						&& txtPhoneNumber.getText().trim().length() > 0
+						&& txtEmailAddress.getText().trim().length() > 0
+						&& txtDiscount.getText().trim().length() > 0) {
+					controller.addCustomer(
+							Integer.parseInt(txtCustomerNr.getText()),
+							txtFirstName.getText(), txtLastName.getText(),
+							txtStreetAddress.getText(), txtZipCode.getText(),
+							txtCity.getText(), txtCountry.getText(),
+							txtPhoneNumber.getText(),
+							txtEmailAddress.getText(),
+							Double.parseDouble(txtDiscount.getText()));
+					clearCustomer();
+					txtCustomerNr.setText(Integer.toString(controller.getCustomerRegistrySize()));
+				}
+
+				else {
+					JOptionPane.showMessageDialog(null, "Vänligen fyll i alla fält", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
-		
+
 		JButton btnRemoveCustomer = new JButton("Ta bort kund");
 		btnRemoveCustomer.setBounds(200, 418, 176, 25);
 		pnlCustomer.add(btnRemoveCustomer);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBounds(12, 100, 551, 2);
+		pnlCustomer.add(separator);
 		btnRemoveCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.removeCustomer(Integer.parseInt(txtCustomerNr.getText()));
 				clearCustomer();
 			}
 		});
-        
-		
-		
-		
-		
+
 		
 		
 		
@@ -285,487 +310,619 @@ public class GUI extends JFrame {
 		
 		
 		// Lägg order
+
+		JPanel pnlOrder = new JPanel();
+		pnlOrder.setLayout(null);
+		jtp.addTab("Lägg order", pnlOrder);
+
+		JLabel lblOrderNr = new JLabel("Ordernummer");
+		lblOrderNr.setBounds(12, 13, 116, 16);
+		pnlOrder.add(lblOrderNr);
+
+		txtOrderNr = new JTextField();
+		txtOrderNr.setBounds(12, 42, 116, 22);
+		txtOrderNr.setEditable(false);
+		txtOrderNr.setText(Integer.toString(controller.getOrderRegistrySize()));
+		pnlOrder.add(txtOrderNr);
+		txtOrderNr.setColumns(10);
+
+		txtCustomerNrNewOrder = new JTextField();
+		txtCustomerNrNewOrder.setBounds(12, 421, 116, 22);
+		pnlOrder.add(txtCustomerNrNewOrder);
+		txtCustomerNrNewOrder.setColumns(10);
+
+		txtRentalDate = new JTextField();
+		txtRentalDate.setBounds(140, 42, 116, 22);
+		pnlOrder.add(txtRentalDate);
+		txtRentalDate.setColumns(10);
+
+		String[] vehicleTypes = { "Personbil", "Skåpbil", "Släpvagn", "Husvagn", "Båttrailer" };
+		final JComboBox comboBox = new JComboBox(vehicleTypes);
+		comboBox.setSelectedIndex(4);
+		comboBox.setBounds(268, 42, 169, 22);
+		pnlOrder.add(comboBox);
+
+		JLabel lblCustomerNrNewOrder = new JLabel("Kundnummer");
+		lblCustomerNrNewOrder.setBounds(12, 392, 116, 16);
+		pnlOrder.add(lblCustomerNrNewOrder);
+
+		JLabel lblRentalDate = new JLabel("Datum (ÅÅMMDD)");
+		lblRentalDate.setBounds(140, 13, 116, 16);
+		pnlOrder.add(lblRentalDate);
+
+		JLabel lblVehicleType = new JLabel("Fordonstyp");
+		lblVehicleType.setBounds(268, 13, 169, 16);
+		pnlOrder.add(lblVehicleType);
+
+		JLabel lblOrderRegNr = new JLabel("Regnr");
+		lblOrderRegNr.setBounds(12, 130, 56, 16);
+		pnlOrder.add(lblOrderRegNr);
+
+		JLabel lblOrderBrand = new JLabel("Märke");
+		lblOrderBrand.setBounds(104, 130, 56, 16);
+		pnlOrder.add(lblOrderBrand);
+
+		JLabel lblOrderModel = new JLabel("Modell");
+		lblOrderModel.setBounds(196, 130, 56, 16);
+		pnlOrder.add(lblOrderModel);
+
+		JLabel lblOrderModelYear = new JLabel("Årsmodell");
+		lblOrderModelYear.setBounds(288, 130, 80, 16);
+		pnlOrder.add(lblOrderModelYear);
+
+		JLabel lblOrderLocation = new JLabel("Plats");
+		lblOrderLocation.setBounds(380, 130, 56, 16);
+		pnlOrder.add(lblOrderLocation);
+
+		JLabel lblOrderVehiclePrice = new JLabel("Pris");
+		lblOrderVehiclePrice.setBounds(472, 130, 56, 16);
+		pnlOrder.add(lblOrderVehiclePrice);
+
+		final DefaultTableModel model = new DefaultTableModel();
+		final JTable table = new JTable(16, 6);
+		table.setBounds(12, 159, 553, 220);
+		model.setColumnIdentifiers(new String[] { "", "", "", "", "", "" });
+		table.setVisible(true);
+		table.setModel(model);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setColumnSelectionAllowed(false);
+		table.setRowSelectionAllowed(true);
+		pnlOrder.add(table);
+		//Skapar och lägger till en JTable till panelen Order. JTablen har 6 kolumner. Endast val av rows är enabled och endast en row kan väljas åt gången.
+
+		final JButton btnAvailableVehicles = new JButton("Visa tillgängliga fordon");
+		btnAvailableVehicles.setBounds(12, 77, 244, 25);
+		btnAvailableVehicles.setEnabled(false);
+		pnlOrder.add(btnAvailableVehicles);
+		//Skapar Jbutton btnAvailableVehicles som är disabled by default.
 		
-        JPanel pnlOrder = new JPanel();
-        pnlOrder.setLayout(null);
-        jtp.addTab("Lägg order", pnlOrder);
-        
-        JLabel lblOrderNr = new JLabel("Ordernummer");
-        lblOrderNr.setBounds(12, 13, 116, 16);
-        pnlOrder.add(lblOrderNr);
-        
-        txtOrderNr = new JTextField();
-        txtOrderNr.setBounds(12, 42, 116, 22);
-        txtOrderNr.setEditable(false);
-        txtOrderNr.setText(Integer.toString(controller.getOrderRegistrySize()));
-        pnlOrder.add(txtOrderNr);
-        txtOrderNr.setColumns(10);
-        
-        txtCustomerNrNewOrder = new JTextField();
-        txtCustomerNrNewOrder.setBounds(12, 421, 116, 22);
-        pnlOrder.add(txtCustomerNrNewOrder);
-        txtCustomerNrNewOrder.setColumns(10);
-        
-        txtRentalDate = new JTextField();
-        txtRentalDate.setBounds(140, 42, 116, 22);
-        pnlOrder.add(txtRentalDate);
-        txtRentalDate.setColumns(10);
-        
-        
-        String[] vehicleTypes = {"Personbil", "Skåpbil", "Släpvagn", "Husvagn", "Båttrailer"};
-        final JComboBox comboBox = new JComboBox(vehicleTypes);
-        comboBox.setSelectedIndex(4);
-        comboBox.setBounds(268, 42, 169, 22);
-        pnlOrder.add(comboBox);
-      
-        JLabel lblCustomerNrNewOrder = new JLabel("Kundnummer");
-        lblCustomerNrNewOrder.setBounds(12, 392, 116, 16);
-        pnlOrder.add(lblCustomerNrNewOrder);
-        
-        JLabel lblRentalDate = new JLabel("Datum (ÅÅMMDD)");
-        lblRentalDate.setBounds(140, 13, 116, 16);
-        pnlOrder.add(lblRentalDate);
-        
-        JLabel lblVehicleType = new JLabel("Fordonstyp");
-        lblVehicleType.setBounds(268, 13, 169, 16);
-        pnlOrder.add(lblVehicleType);
-                
-        JLabel lblOrderRegNr = new JLabel("Regnr");
-        lblOrderRegNr.setBounds(12, 130, 56, 16);
-        pnlOrder.add(lblOrderRegNr);
-        
-        JLabel lblOrderBrand = new JLabel("Märke");
-        lblOrderBrand.setBounds(104, 130, 56, 16);
-        pnlOrder.add(lblOrderBrand);
-        
-        JLabel lblOrderModel = new JLabel("Modell");
-        lblOrderModel.setBounds(196, 130, 56, 16);
-        pnlOrder.add(lblOrderModel);
-        
-        JLabel lblOrderModelYear = new JLabel("Årsmodell");
-        lblOrderModelYear.setBounds(288, 130, 80, 16);
-        pnlOrder.add(lblOrderModelYear);
-        
-        JLabel lblOrderLocation = new JLabel("Plats");
-        lblOrderLocation.setBounds(380, 130, 56, 16);
-        pnlOrder.add(lblOrderLocation);
-        
-        JLabel lblOrderVehiclePrice = new JLabel("Pris");
-        lblOrderVehiclePrice.setBounds(472, 130, 56, 16);
-        pnlOrder.add(lblOrderVehiclePrice);
-        
-        
-        
-        final DefaultTableModel model = new DefaultTableModel();
-        final JTable table = new JTable(16, 6);
-        table.setBounds(12, 159, 553, 220);
-        model.setColumnIdentifiers(new String[]{"", "", "", "", "", ""});
-        table.setVisible(true);
-        table.setModel(model);
-        pnlOrder.add(table);
-        
-        JButton btnAvailableVehicles = new JButton("Visa tillgängliga fordon");
-        btnAvailableVehicles.setBounds(12, 77, 244, 25);
-        pnlOrder.add(btnAvailableVehicles);
-        btnAvailableVehicles.addActionListener(new ActionListener() {
+		Document textFieldDoc = txtRentalDate.getDocument();
+		textFieldDoc.addDocumentListener(new DocumentListener() {
+		   public void changedUpdate(DocumentEvent e) {
+		      updated(e);
+		   }
+		   public void insertUpdate(DocumentEvent e) {
+		      updated(e);
+		   }
+		   public void removeUpdate(DocumentEvent e) {
+		      updated(e);
+		   }
+		   private void updated(DocumentEvent e) {
+		      boolean enable = e.getDocument().getLength() == 6;
+		      btnAvailableVehicles.setEnabled(enable);
+		   }
+		});
+		//Enablear btnAvailableVehicles om txtRentalDate har exakt 6 bokstäver ifyllda.
+		
+		
+		btnAvailableVehicles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				model.setRowCount(0);
 				String selected = comboBox.getSelectedItem().toString();
-					ArrayList<Vehicle> tmplist = controller.findAvailableTypes(selected);
-			        	for (Vehicle tmp : tmplist){
-			        		model.addRow(new String[] {tmp.getRegNr(), tmp.getBrand(), tmp.getModel(), tmp.getModelYear(), tmp.getLocation(), Double.toString(tmp.getVehiclePrice())});
-			        	}
-		          }
-			
+				ArrayList<Vehicle> tmplist = controller.findAvailableTypesAtDate(selected, txtRentalDate.getText());
+				for (Vehicle tmp : tmplist) {
+					model.addRow(new String[] { tmp.getRegNr(), tmp.getBrand(),	tmp.getModel(), tmp.getModelYear(),	tmp.getLocation(), Double.toString(tmp.getVehiclePrice()) });
+				}
+			}
+		});
+		/* Kollar vilket item som är selected i listan över fordonstyper. Använder metoden findAvailableTypesAtDate för att hämta och fylla en ArrayList (tmplist)
+		med fordon som är tillgängliga vid datumet som är angett i txtRentalDate. Forloopar igenom tmplist och skriver ut alla fordon i tabellen (model.addRow) */
+
+		final JButton btnAddVehicleOrder = new JButton("Boka valt fordon och spara order");
+		btnAddVehicleOrder.setBounds(265, 405, 300, 25);
+		btnAddVehicleOrder.setEnabled(false);
+		pnlOrder.add(btnAddVehicleOrder);
+		// Skapar JButton btnAddVehicleOrder som är disabled by default.
+
+		ListSelectionModel listSelectionModel = table.getSelectionModel();
+		listSelectionModel.addListSelectionListener(new ListSelectionListener() {
+					public void valueChanged(ListSelectionEvent e) {
+						ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+						btnAddVehicleOrder.setEnabled(!lsm.isSelectionEmpty());
+					}
+				});
+		//Enablear btnAddVehicleOrder om någon rad i tabellen är selected.
+
+		btnAddVehicleOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				boolean cnumber = true;
+				if ((cnumber == intIsNotParseable(txtCustomerNrNewOrder.getText()))	|| (txtCustomerNrNewOrder.getText().trim().length() < 1)) {
+					JOptionPane.showMessageDialog(null,	"Vänligen ange kundnummer (i sifferformat)", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					Customer tmpcust = controller.findCustomer(Integer.parseInt(txtCustomerNrNewOrder.getText()));
+					if (tmpcust != null) {
+						controller.createOrder(Integer.parseInt(txtOrderNr.getText()), controller.getOrderDate(), txtRentalDate.getText(), controller.findCustomer(Integer.parseInt(txtCustomerNrNewOrder.getText())), controller.findVehicle(table.getValueAt(table.getSelectedRow(), 0).toString()));
+						model.setRowCount(0);
+						clearCreateOrder();
+						txtOrderNr.setText(Integer.toString(controller.getOrderRegistrySize()));
+					}
+					else {
+						JOptionPane.showMessageDialog(null,	"Angiven kund existerar inte", "Felmeddelande",	JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
+		//Använder metoden intIsNotParseable för att kontrollera så att user inte har skrivit String i txtCustomerNrNewOrder (måste vara en int).
+		
+		
+
+		
+		
+		
+		
+		
+		
+		
+		
+		// Visa order
+
+		JPanel pnlViewOrder = new JPanel();
+		pnlViewOrder.setLayout(null);
+		JLabel lblViewOrder = new JLabel();
+		lblViewOrder.setBounds(220, 5, 136, 16);
+		pnlViewOrder.add(lblViewOrder);
+		jtp.addTab("Visa order", pnlViewOrder);
+
+		JLabel lblCustomerNrViewOrder = new JLabel("Kundnummer");
+		lblCustomerNrViewOrder.setBounds(12, 13, 116, 16);
+		pnlViewOrder.add(lblCustomerNrViewOrder);
+
+		txtCustomerNrViewOrder = new JTextField();
+		txtCustomerNrViewOrder.setBounds(12, 42, 116, 22);
+		pnlViewOrder.add(txtCustomerNrViewOrder);
+		txtCustomerNrViewOrder.setColumns(10);
+
+		txtRegNrViewOrder = new JTextField();
+		txtRegNrViewOrder.setBounds(321, 120, 116, 22);
+		txtRegNrViewOrder.setEditable(false);
+		pnlViewOrder.add(txtRegNrViewOrder);
+		txtRegNrViewOrder.setColumns(10);
+
+		txtBrandViewOrder = new JTextField();
+		txtBrandViewOrder.setBounds(449, 120, 116, 22);
+		txtBrandViewOrder.setEditable(false);
+		pnlViewOrder.add(txtBrandViewOrder);
+		txtBrandViewOrder.setColumns(10);
+
+		txtModelViewOrder = new JTextField();
+		txtModelViewOrder.setBounds(321, 184, 116, 22);
+		txtModelViewOrder.setEditable(false);
+		pnlViewOrder.add(txtModelViewOrder);
+		txtModelViewOrder.setColumns(10);
+
+		txtModelYearViewOrder = new JTextField();
+		txtModelYearViewOrder.setBounds(449, 184, 116, 22);
+		txtModelYearViewOrder.setEditable(false);
+		pnlViewOrder.add(txtModelYearViewOrder);
+		txtModelYearViewOrder.setColumns(10);
+
+		txtLocationViewOrder = new JTextField();
+		txtLocationViewOrder.setBounds(321, 248, 244, 22);
+		txtLocationViewOrder.setEditable(false);
+		pnlViewOrder.add(txtLocationViewOrder);
+		txtLocationViewOrder.setColumns(10);
+
+		txtOrderDateViewOrder = new JTextField();
+		txtOrderDateViewOrder.setBounds(321, 312, 244, 22);
+		txtOrderDateViewOrder.setEditable(false);
+		pnlViewOrder.add(txtOrderDateViewOrder);
+		txtOrderDateViewOrder.setColumns(10);
+
+		txtListPrice = new JTextField();
+		txtListPrice.setBounds(321, 376, 116, 22);
+		txtListPrice.setEditable(false);
+		pnlViewOrder.add(txtListPrice);
+		txtListPrice.setColumns(10);
+
+		txtDiscountPrice = new JTextField();
+		txtDiscountPrice.setBounds(449, 376, 116, 22);
+		txtDiscountPrice.setEditable(false);
+		pnlViewOrder.add(txtDiscountPrice);
+		txtDiscountPrice.setColumns(10);
+
+		JLabel lblListprice = new JLabel("Listpris");
+		lblListprice.setBounds(321, 347, 116, 16);
+		pnlViewOrder.add(lblListprice);
+
+		JLabel lblDiscountprice = new JLabel("Kundens pris");
+		lblDiscountprice.setBounds(449, 347, 116, 16);
+		pnlViewOrder.add(lblDiscountprice);
+
+		JLabel lblOrderDateViewOrder = new JLabel("Orderdatum");
+		lblOrderDateViewOrder.setBounds(321, 283, 116, 16);
+		pnlViewOrder.add(lblOrderDateViewOrder);
+
+		JLabel lblCustomerNrTableViewOrder = new JLabel("Kundnr");
+		lblCustomerNrTableViewOrder.setBounds(12, 91, 58, 16);
+		pnlViewOrder.add(lblCustomerNrTableViewOrder);
+
+		JLabel lblOrderNrViewOrder = new JLabel("Ordernr");
+		lblOrderNrViewOrder.setBounds(86, 91, 58, 16);
+		pnlViewOrder.add(lblOrderNrViewOrder);
+
+		JLabel lblRentalDateViewOrder = new JLabel("Hyrdatum");
+		lblRentalDateViewOrder.setBounds(160, 91, 67, 16);
+		pnlViewOrder.add(lblRentalDateViewOrder);
+
+		JLabel lblVehicleTypeViewOrder = new JLabel("Fordonstyp");
+		lblVehicleTypeViewOrder.setBounds(235, 91, 67, 16);
+		pnlViewOrder.add(lblVehicleTypeViewOrder);
+
+		JLabel lblRegnrvieworder = new JLabel("Regnummer");
+		lblRegnrvieworder.setBounds(321, 91, 116, 16);
+		pnlViewOrder.add(lblRegnrvieworder);
+
+		JLabel lblBrandvieworder = new JLabel("Märke");
+		lblBrandvieworder.setBounds(449, 91, 116, 16);
+		pnlViewOrder.add(lblBrandvieworder);
+
+		JLabel lblModelvieworder = new JLabel("Modell");
+		lblModelvieworder.setBounds(321, 155, 116, 16);
+		pnlViewOrder.add(lblModelvieworder);
+
+		JLabel lblModelyearvieworder = new JLabel("Årsmodell");
+		lblModelyearvieworder.setBounds(449, 155, 116, 16);
+		pnlViewOrder.add(lblModelyearvieworder);
+
+		JLabel lblLocationvieworder = new JLabel("Plats");
+		lblLocationvieworder.setBounds(321, 219, 116, 16);
+		pnlViewOrder.add(lblLocationvieworder);
+
+		final DefaultTableModel model2 = new DefaultTableModel();
+		final JTable table2 = new JTable(10, 3);
+		table2.setBounds(12, 120, 297, 278);
+		model2.setColumnIdentifiers(new String[] { "", "", "", "", });
+		table2.setVisible(true);
+		table2.setModel(model2);
+		table2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table2.setColumnSelectionAllowed(false);
+		table2.setRowSelectionAllowed(true);
+		pnlViewOrder.add(table2);
+
+		JButton btnSearchCustomerViewOrder = new JButton("Visa ordrar");
+		btnSearchCustomerViewOrder.setBounds(140, 41, 116, 25);
+		pnlViewOrder.add(btnSearchCustomerViewOrder);
+		btnSearchCustomerViewOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				model2.setRowCount(0);
+				clearViewOrder();
+				
+				boolean cnumber = true;
+				
+				if ((cnumber == intIsNotParseable(txtCustomerNrViewOrder.getText())) || (txtCustomerNrViewOrder.getText().trim().length() < 1)) {
+					JOptionPane.showMessageDialog(null,	"Vänligen ange kundnummer (i sifferformat)", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					int selectedCustomer = Integer.parseInt(txtCustomerNrViewOrder.getText());
+					Customer tmpcust = controller.findCustomer(selectedCustomer);
+
+					if (tmpcust == null) {
+						JOptionPane.showMessageDialog(null,	"Angiven kund existerar inte", "Felmeddelande",	JOptionPane.ERROR_MESSAGE);
+					}
+					else {
+						ArrayList<Order> tmporderlist = controller.findCustomer(selectedCustomer).getPreviousOrders();
+						if (tmporderlist.isEmpty()) {
+							JOptionPane.showMessageDialog(null,	"Kunden har ingen orderhistorik", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+						}
+						else {
+							for (Order tmporder : tmporderlist) {
+								model2.addRow(new String[] {
+										Integer.toString(tmporder.getCustomer().getCustomerNr()), Integer.toString(tmporder.getOrderNr()), tmporder.getRentalDate(), tmporder.getVehicle().getVehicleType() });
+							}
+						}
+					}
+				}
+			}
 		});
 
-        JButton btnAddVehicleOrder = new JButton("Boka valt fordon och spara order");
-        btnAddVehicleOrder.setBounds(265, 405, 300, 25);
-        pnlOrder.add(btnAddVehicleOrder);
-        btnAddVehicleOrder.addActionListener(new ActionListener() {
-   			public void actionPerformed(ActionEvent e) {
-   				controller.createOrder(Integer.parseInt(txtOrderNr.getText()), controller.getOrderDate(), txtRentalDate.getText(), controller.findCustomer(Integer.parseInt(txtCustomerNrNewOrder.getText())), controller.findVehicle(table.getValueAt(table.getSelectedRow(), 0).toString()));
-   				model.setRowCount(0);
-   				clearCreateOrder();
-   				txtOrderNr.setText(Integer.toString(controller.getOrderRegistrySize()));
-   			}
-   			}
-   		);
-        
-      
-        
-        
-        
-        
-        
-        
-        
-        
-        //Visa order
-        
-        JPanel pnlViewOrder = new JPanel();
-        pnlViewOrder.setLayout(null);
-        JLabel lblViewOrder = new JLabel();
-        lblViewOrder.setBounds(220, 5, 136, 16);
-        pnlViewOrder.add(lblViewOrder);
-        jtp.addTab("Visa order", pnlViewOrder);
-        
-        JLabel lblCustomerNrViewOrder = new JLabel("Kundnummer");
-        lblCustomerNrViewOrder.setBounds(12, 13, 116, 16);
-        pnlViewOrder.add(lblCustomerNrViewOrder);
-        
-        txtCustomerNrViewOrder = new JTextField();
-        txtCustomerNrViewOrder.setBounds(12, 42, 116, 22);
-        pnlViewOrder.add(txtCustomerNrViewOrder);
-        txtCustomerNrViewOrder.setColumns(10);
-        
-        txtRegNrViewOrder = new JTextField();
-        txtRegNrViewOrder.setBounds(321, 120, 116, 22);
-        txtRegNrViewOrder.setEditable(false);
-        pnlViewOrder.add(txtRegNrViewOrder);
-        txtRegNrViewOrder.setColumns(10);
-        
-        txtBrandViewOrder = new JTextField();
-        txtBrandViewOrder.setBounds(449, 120, 116, 22);
-        txtBrandViewOrder.setEditable(false);
-        pnlViewOrder.add(txtBrandViewOrder);
-        txtBrandViewOrder.setColumns(10);
-        
-        txtModelViewOrder = new JTextField();
-        txtModelViewOrder.setBounds(321, 184, 116, 22);
-        txtModelViewOrder.setEditable(false);
-        pnlViewOrder.add(txtModelViewOrder);
-        txtModelViewOrder.setColumns(10);
-        
-        txtModelYearViewOrder = new JTextField();
-        txtModelYearViewOrder.setBounds(449, 184, 116, 22);
-        txtModelYearViewOrder.setEditable(false);
-        pnlViewOrder.add(txtModelYearViewOrder);
-        txtModelYearViewOrder.setColumns(10);
-        
-        txtLocationViewOrder = new JTextField();
-        txtLocationViewOrder.setBounds(321, 248, 244, 22);
-        txtLocationViewOrder.setEditable(false);
-        pnlViewOrder.add(txtLocationViewOrder);
-        txtLocationViewOrder.setColumns(10);
-        
-        txtOrderDateViewOrder = new JTextField();
-        txtOrderDateViewOrder.setBounds(321, 312, 244, 22);
-        txtOrderDateViewOrder.setEditable(false);
-        pnlViewOrder.add(txtOrderDateViewOrder);
-        txtOrderDateViewOrder.setColumns(10);
-               
-        txtListPrice = new JTextField();
-        txtListPrice.setBounds(321, 376, 116, 22);
-        txtListPrice.setEditable(false);
-        pnlViewOrder.add(txtListPrice);
-        txtListPrice.setColumns(10);
-             
-        txtDiscountPrice = new JTextField();
-        txtDiscountPrice.setBounds(449, 376, 116, 22);
-        txtDiscountPrice.setEditable(false);
-        pnlViewOrder.add(txtDiscountPrice);
-        txtDiscountPrice.setColumns(10);
-        
-        JLabel lblListprice = new JLabel("Listpris");
-        lblListprice.setBounds(321, 347, 116, 16);
-        pnlViewOrder.add(lblListprice);
-        
-        JLabel lblDiscountprice = new JLabel("Kundens pris");
-        lblDiscountprice.setBounds(449, 347, 116, 16);
-        pnlViewOrder.add(lblDiscountprice);
-        
-        JLabel lblOrderDateViewOrder = new JLabel("Orderdatum");
-        lblOrderDateViewOrder.setBounds(321, 283, 116, 16);
-        pnlViewOrder.add(lblOrderDateViewOrder);
-        
-        JLabel lblOrderNrViewOrder = new JLabel("Ordernummer");
-        lblOrderNrViewOrder.setBounds(12, 91, 83, 16);
-        pnlViewOrder.add(lblOrderNrViewOrder);
-        
-        JLabel lblRentalDateViewOrder = new JLabel("Hyrdatum");
-        lblRentalDateViewOrder.setBounds(111, 91, 83, 16);
-        pnlViewOrder.add(lblRentalDateViewOrder);
-        
-        JLabel lblVehicleTypeViewOrder = new JLabel("Fordonstyp");
-        lblVehicleTypeViewOrder.setBounds(213, 91, 83, 16);
-        pnlViewOrder.add(lblVehicleTypeViewOrder);
-        
-        JLabel lblRegnrvieworder = new JLabel("Regnummer");
-        lblRegnrvieworder.setBounds(321, 91, 116, 16);
-        pnlViewOrder.add(lblRegnrvieworder);
-        
-        JLabel lblBrandvieworder = new JLabel("Märke");
-        lblBrandvieworder.setBounds(449, 91, 116, 16);
-        pnlViewOrder.add(lblBrandvieworder);
-        
-        JLabel lblModelvieworder = new JLabel("Modell");
-        lblModelvieworder.setBounds(321, 155, 116, 16);
-        pnlViewOrder.add(lblModelvieworder);
-        
-        JLabel lblModelyearvieworder = new JLabel("Årsmodell");
-        lblModelyearvieworder.setBounds(449, 155, 116, 16);
-        pnlViewOrder.add(lblModelyearvieworder);
-        
-        JLabel lblLocationvieworder = new JLabel("Plats");
-        lblLocationvieworder.setBounds(321, 219, 116, 16);
-        pnlViewOrder.add(lblLocationvieworder);
-        
-                
-        
-        final DefaultTableModel model2 = new DefaultTableModel();
-        final JTable table2 = new JTable(10, 3);
-        table2.setBounds(12, 120, 297, 278);
-        model2.setColumnIdentifiers(new String[]{"", "", "",});
-        table2.setVisible(true);
-        table2.setModel(model2);
-        pnlViewOrder.add(table2);
-        
-        
+		final JButton btnOrderDetails = new JButton("Orderdetaljer");
+		btnOrderDetails.setBounds(12, 418, 176, 25);
+		btnOrderDetails.setEnabled(false);
+		pnlViewOrder.add(btnOrderDetails);
 
-        JButton btnSearchCustomerViewOrder = new JButton("Visa ordrar");
-        btnSearchCustomerViewOrder.setBounds(140, 41, 116, 25);
-        pnlViewOrder.add(btnSearchCustomerViewOrder);
-        btnSearchCustomerViewOrder.addActionListener(new ActionListener() {
-     			public void actionPerformed(ActionEvent e) {
-     				String selectedCustomer = txtCustomerNrViewOrder.getText();
-     					ArrayList<Order> tmporderlist = controller.findCustomer(Integer.parseInt(selectedCustomer)).getPreviousOrders();
-     						for (Order tmporder : tmporderlist){
-     							model2.addRow(new String[] {Integer.toString(tmporder.getOrderNr()), tmporder.getRentalDate(), tmporder.getVehicle().getVehicleType()});
-     						}
-     			}
-        });
-        
-        JButton btnOrderDetails = new JButton("Orderdetaljer");
-        btnOrderDetails.setBounds(12, 418, 176, 25);
-        pnlViewOrder.add(btnOrderDetails);
-        btnOrderDetails.addActionListener(new ActionListener() {
-     			public void actionPerformed(ActionEvent e) {
-     				int tmpOrder = Integer.parseInt(table2.getValueAt(table2.getSelectedRow(), 0).toString());
-     				txtRegNrViewOrder.setText(controller.getOrder(tmpOrder).getVehicle().getRegNr());
-     				txtBrandViewOrder.setText(controller.getOrder(tmpOrder).getVehicle().getBrand());
-     				txtModelViewOrder.setText(controller.getOrder(tmpOrder).getVehicle().getModel());
-     				txtModelYearViewOrder.setText(controller.getOrder(tmpOrder).getVehicle().getModelYear());
-     				txtLocationViewOrder.setText(controller.getOrder(tmpOrder).getVehicle().getLocation());
-     				txtOrderDateViewOrder.setText(controller.getOrder(tmpOrder).getOrderDate());
-     				txtListPrice.setText(Double.toString(controller.getOrder(tmpOrder).getVehicle().getVehiclePrice()));
-     				txtDiscountPrice.setText(Double.toString(controller.getOrder(tmpOrder).getOrderPrice()));
-     			}
-     			}
-     		);
-        
-        
-        JButton btnRemoveOrder = new JButton("Ta bort order");
-        btnRemoveOrder.setBounds(200, 418, 176, 25);
-        pnlViewOrder.add(btnRemoveOrder);
-        btnRemoveOrder.addActionListener(new ActionListener() {
-  			public void actionPerformed(ActionEvent e) {
-  				controller.removeOrderFromCustomer(Integer.parseInt(txtCustomerNrViewOrder.getText()), Integer.parseInt(table2.getValueAt(table2.getSelectedRow(), 0).toString()));
-  				controller.removeOrder(Integer.parseInt(table2.getValueAt(table2.getSelectedRow(), 0).toString()));
-  				model2.setRowCount(0);
-  				clearViewOrder();
-  			}
-  		});
-          
-        JButton btnClearViewOrder = new JButton("Rensa formulär");
-        btnClearViewOrder.setBounds(388, 418, 177, 25);
-        pnlViewOrder.add(btnClearViewOrder);
-        btnClearViewOrder.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		model2.setRowCount(0);
-        		clearViewOrder();
-        	}
-        });
-   
-        
-        
-        
-        
-        
-        
-        
-        
-        //Fordon
+		final JButton btnRemoveOrder = new JButton("Ta bort order");
+		btnRemoveOrder.setBounds(200, 418, 176, 25);
+		btnRemoveOrder.setEnabled(false);
+		pnlViewOrder.add(btnRemoveOrder);
 
-        JPanel pnlVehicle = new JPanel();
-        pnlVehicle.setLayout(null);
-        JLabel lblVehicle = new JLabel();
-        lblVehicle.setBounds(220, 5, 136, 16);
-        pnlVehicle.add(lblVehicle);
-        jtp.addTab("Fordon", pnlVehicle);
-        
-        lblSearchVehicle = new JLabel("Sök fordon");
-        lblSearchVehicle.setBounds(12, 13, 116, 16);
-        pnlVehicle.add(lblSearchVehicle);
-        
-        txtSearchVehicle = new JTextField();
-        txtSearchVehicle.setBounds(12, 42, 116, 22);
-        pnlVehicle.add(txtSearchVehicle);
-        txtSearchVehicle.setColumns(10);
-        
-        JLabel lblRegNr = new JLabel("Regnummer");
-        lblRegNr.setBounds(12, 134, 116, 16);
-        pnlVehicle.add(lblRegNr);
-        
-        txtRegNr = new JTextField();
-        txtRegNr.setBounds(12, 163, 116, 22);
-        pnlVehicle.add(txtRegNr);
-        txtRegNr.setColumns(10);
-        
-        txtVehicleType = new JTextField();
-        txtVehicleType.setBounds(12, 227, 244, 22);
-        pnlVehicle.add(txtVehicleType);
-        txtVehicleType.setColumns(10);
-       
-        JLabel lblVehicleType_1 = new JLabel("Fordonstyp");
-        lblVehicleType_1.setBounds(12, 198, 116, 16);
-        pnlVehicle.add(lblVehicleType_1);
-        
-        JLabel lblBrand = new JLabel("Märke");
-        lblBrand.setBounds(12, 262, 56, 16);
-        pnlVehicle.add(lblBrand);
-        
-        txtBrand = new JTextField();
-        txtBrand.setBounds(12, 291, 116, 22);
-        pnlVehicle.add(txtBrand);
-        txtBrand.setColumns(10);
-        
-        JLabel lblModel = new JLabel("Modell");
-        lblModel.setBounds(140, 262, 56, 16);
-        pnlVehicle.add(lblModel);
-        
-        txtModel = new JTextField();
-        txtModel.setBounds(140, 291, 116, 22);
-        pnlVehicle.add(txtModel);
-        txtModel.setColumns(10);
-        
-        JLabel lblModelYear = new JLabel("Årsmodell");
-        lblModelYear.setBounds(12, 326, 116, 16);
-        pnlVehicle.add(lblModelYear);
-        
-        txtModelYear = new JTextField();
-        txtModelYear.setBounds(12, 355, 116, 22);
-        pnlVehicle.add(txtModelYear);
-        txtModelYear.setColumns(10);
-        
-        JLabel lblLocation = new JLabel("Plats");
-        lblLocation.setBounds(140, 326, 56, 16);
-        pnlVehicle.add(lblLocation);
-        
-        txtLocation = new JTextField();
-        txtLocation.setBounds(140, 355, 116, 22);
-        pnlVehicle.add(txtLocation);
-        txtLocation.setColumns(10);
-        
-        JLabel lblVehiclePrice = new JLabel("Pris");
-        lblVehiclePrice.setBounds(140, 134, 116, 16);
-        pnlVehicle.add(lblVehiclePrice);
-        
-        txtVehiclePrice = new JTextField();
-        txtVehiclePrice.setBounds(140, 163, 116, 22);
-        pnlVehicle.add(txtVehiclePrice);
-        txtVehiclePrice.setColumns(10);
-        
-        JButton btnCreateVehicle = new JButton("Spara fordon");
-        btnCreateVehicle.setBounds(12, 418, 176, 25);
-        pnlVehicle.add(btnCreateVehicle);
-        btnCreateVehicle.addActionListener(new ActionListener() {
-   			public void actionPerformed(ActionEvent e) {
-   				controller.addVehicle(txtRegNr.getText(), txtVehicleType.getText(), txtBrand.getText(), txtModel.getText(), txtModelYear.getText(), txtLocation.getText(), Double.parseDouble(txtVehiclePrice.getText()));
-   				clearVehicle();
-   				}
-   		});
-        
-        JButton btnClearVehicle = new JButton("Rensa formulär");
-        btnClearVehicle.setBounds(389, 418, 176, 25);
-        pnlVehicle.add(btnClearVehicle);
-        btnClearVehicle.addActionListener(new ActionListener() {
+		ListSelectionModel listSelectionModel2 = table2.getSelectionModel();
+		listSelectionModel2.addListSelectionListener(new ListSelectionListener() {
+					public void valueChanged(ListSelectionEvent e) {
+						ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+						btnOrderDetails.setEnabled(!lsm.isSelectionEmpty());
+						btnRemoveOrder.setEnabled(!lsm.isSelectionEmpty());
+					}
+				});
+
+		btnOrderDetails.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int tmpOrder = Integer.parseInt(table2.getValueAt(table2.getSelectedRow(), 1).toString());
+				
+				txtRegNrViewOrder.setText(controller.getOrder(tmpOrder).getVehicle().getRegNr());
+				txtBrandViewOrder.setText(controller.getOrder(tmpOrder).getVehicle().getBrand());
+				txtModelViewOrder.setText(controller.getOrder(tmpOrder).getVehicle().getModel());
+				txtModelYearViewOrder.setText(controller.getOrder(tmpOrder).getVehicle().getModelYear());
+				txtLocationViewOrder.setText(controller.getOrder(tmpOrder).getVehicle().getLocation());
+				txtOrderDateViewOrder.setText(controller.getOrder(tmpOrder).getOrderDate());
+				txtListPrice.setText(Double.toString(controller.getOrder(tmpOrder).getVehicle().getVehiclePrice()));
+				txtDiscountPrice.setText(Double.toString(controller.getOrder(tmpOrder).getOrderPrice()));
+			}
+		});
+
+		btnRemoveOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Customer selectedCustomer = controller.findCustomer(Integer.parseInt(txtCustomerNrViewOrder.getText()));
+				controller.removeOrder(controller.getOrder(Integer.parseInt(table2.getValueAt(table2.getSelectedRow(), 1).toString())), selectedCustomer, table2.getValueAt(table2.getSelectedRow(), 2).toString());
+				model2.setRowCount(0);
+				clearViewOrder();
+				
+				ArrayList<Order> tmporderlist = controller.findCustomer(selectedCustomer.getCustomerNr()).getPreviousOrders();
+				for (Order tmporder : tmporderlist) {
+					model2.addRow(new String[] {
+							Integer.toString(tmporder.getCustomer().getCustomerNr()), Integer.toString(tmporder.getOrderNr()), tmporder.getRentalDate(), tmporder.getVehicle().getVehicleType() });
+				}
+			}
+		});
+
+		JButton btnClearViewOrder = new JButton("Rensa formulär");
+		btnClearViewOrder.setBounds(388, 418, 177, 25);
+		pnlViewOrder.add(btnClearViewOrder);
+		btnClearViewOrder.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				model2.setRowCount(0);
+				clearViewOrder();
+				txtCustomerNrViewOrder.setText("");
+			}
+		});
+
+		
+		
+		
+		
+		
+		
+		
+		
+		// Fordon
+
+		JPanel pnlVehicle = new JPanel();
+		pnlVehicle.setLayout(null);
+		JLabel lblVehicle = new JLabel();
+		lblVehicle.setBounds(220, 5, 136, 16);
+		pnlVehicle.add(lblVehicle);
+		jtp.addTab("Fordon", pnlVehicle);
+
+		lblSearchVehicle = new JLabel("Sök regnummer");
+		lblSearchVehicle.setBounds(12, 13, 116, 16);
+		pnlVehicle.add(lblSearchVehicle);
+
+		txtSearchVehicle = new JTextField();
+		txtSearchVehicle.setBounds(12, 42, 116, 22);
+		pnlVehicle.add(txtSearchVehicle);
+		txtSearchVehicle.setColumns(10);
+
+		JLabel lblRegNr = new JLabel("Regnummer");
+		lblRegNr.setBounds(12, 134, 116, 16);
+		pnlVehicle.add(lblRegNr);
+
+		txtRegNr = new JTextField();
+		txtRegNr.setBounds(12, 163, 116, 22);
+		pnlVehicle.add(txtRegNr);
+		txtRegNr.setColumns(10);
+
+		txtVehicleType = new JTextField();
+		txtVehicleType.setBounds(12, 227, 244, 22);
+		pnlVehicle.add(txtVehicleType);
+		txtVehicleType.setColumns(10);
+
+		JLabel lblVehicleType_1 = new JLabel("Fordonstyp");
+		lblVehicleType_1.setBounds(12, 198, 116, 16);
+		pnlVehicle.add(lblVehicleType_1);
+
+		JLabel lblBrand = new JLabel("Märke");
+		lblBrand.setBounds(12, 262, 56, 16);
+		pnlVehicle.add(lblBrand);
+
+		txtBrand = new JTextField();
+		txtBrand.setBounds(12, 291, 116, 22);
+		pnlVehicle.add(txtBrand);
+		txtBrand.setColumns(10);
+
+		JLabel lblModel = new JLabel("Modell");
+		lblModel.setBounds(140, 262, 56, 16);
+		pnlVehicle.add(lblModel);
+
+		txtModel = new JTextField();
+		txtModel.setBounds(140, 291, 116, 22);
+		pnlVehicle.add(txtModel);
+		txtModel.setColumns(10);
+
+		JLabel lblModelYear = new JLabel("Årsmodell");
+		lblModelYear.setBounds(12, 326, 116, 16);
+		pnlVehicle.add(lblModelYear);
+
+		txtModelYear = new JTextField();
+		txtModelYear.setBounds(12, 355, 116, 22);
+		pnlVehicle.add(txtModelYear);
+		txtModelYear.setColumns(10);
+
+		JLabel lblLocation = new JLabel("Plats");
+		lblLocation.setBounds(140, 326, 56, 16);
+		pnlVehicle.add(lblLocation);
+
+		txtLocation = new JTextField();
+		txtLocation.setBounds(140, 355, 116, 22);
+		pnlVehicle.add(txtLocation);
+		txtLocation.setColumns(10);
+
+		JLabel lblVehiclePrice = new JLabel("Pris");
+		lblVehiclePrice.setBounds(140, 134, 116, 16);
+		pnlVehicle.add(lblVehiclePrice);
+
+		txtVehiclePrice = new JTextField();
+		txtVehiclePrice.setBounds(140, 163, 116, 22);
+		pnlVehicle.add(txtVehiclePrice);
+		txtVehiclePrice.setColumns(10);
+
+		JButton btnCreateVehicle = new JButton("Spara fordon");
+		btnCreateVehicle.setBounds(12, 418, 176, 25);
+		pnlVehicle.add(btnCreateVehicle);
+		btnCreateVehicle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				boolean vprice = true;
+				
+				if (vprice == intIsNotParseable(txtVehiclePrice.getText())) {
+					JOptionPane.showMessageDialog(null,	"Vänligen ange pris (i sifferformat)", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+				}
+				else if (txtRegNr.getText().trim().length() > 0
+						&& txtVehicleType.getText().trim().length() > 0
+						&& txtBrand.getText().trim().length() > 0
+						&& txtModel.getText().trim().length() > 0
+						&& txtModelYear.getText().trim().length() > 0
+						&& txtVehiclePrice.getText().trim().length() > 0
+						&& txtLocation.getText().trim().length() > 0) {
+					controller.addVehicle(txtRegNr.getText(), txtVehicleType.getText(), txtBrand.getText(), txtModel.getText(), txtModelYear.getText(),	txtLocation.getText(), Double.parseDouble(txtVehiclePrice.getText()));
+					clearVehicle();
+				}
+
+				else {
+					JOptionPane.showMessageDialog(null,	"Vänligen fyll i alla fält", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+
+		JButton btnClearVehicle = new JButton("Rensa formulär");
+		btnClearVehicle.setBounds(389, 418, 176, 25);
+		pnlVehicle.add(btnClearVehicle);
+		btnClearVehicle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearVehicle();
 			}
-    	});
-        
-        JButton btnRemoveVehicle = new JButton("Ta bort fordon");
-        btnRemoveVehicle.setBounds(200, 418, 176, 25);
-        pnlVehicle.add(btnRemoveVehicle);
-        btnRemoveVehicle.addActionListener(new ActionListener() {
+		});
+
+		JButton btnRemoveVehicle = new JButton("Ta bort fordon");
+		btnRemoveVehicle.setBounds(200, 418, 176, 25);
+		pnlVehicle.add(btnRemoveVehicle);
+		btnRemoveVehicle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.removeVehicle(txtRegNr.getText());
 				clearVehicle();
 			}
 		});
-        
-        btnSearchVehicle = new JButton("Sök fordon");
-        btnSearchVehicle.setBounds(140, 41, 116, 25);
-        pnlVehicle.add(btnSearchVehicle);
-        btnSearchVehicle.addActionListener(new ActionListener() {
+
+		btnSearchVehicle = new JButton("Sök fordon");
+		btnSearchVehicle.setBounds(140, 41, 116, 25);
+		pnlVehicle.add(btnSearchVehicle);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(12, 100, 551, 2);
+		pnlVehicle.add(separator_1);
+		btnSearchVehicle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				model.Vehicle tmp = controller.findVehicle(txtSearchVehicle.getText());
-				if (tmp != null){
+				if (tmp != null) {
 					txtRegNr.setText(tmp.getRegNr());
 					txtVehiclePrice.setText(Double.toString(tmp.getVehiclePrice()));
 					txtVehicleType.setText(tmp.getVehicleType());
 					txtBrand.setText(tmp.getBrand());
 					txtModel.setText(tmp.getModel());
 					txtModelYear.setText(tmp.getModelYear());
-					txtLocation.setText(tmp.getLocation());					
+					txtLocation.setText(tmp.getLocation());
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Fordonet finns inte. Försök igen.", "Felmeddelande", JOptionPane.ERROR_MESSAGE);	
+					JOptionPane.showMessageDialog(null, "Fordonet finns inte. Försök igen.", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
 				}
 			}
-		});   
-  	}
-	
-public void clearCustomer(){
-	txtSearchCustomer.setText("");
-	txtFirstName.setText("");
-	txtLastName.setText("");
-	txtStreetAddress.setText("");
-	txtZipCode.setText("");
-	txtCity.setText("");
-	txtCountry.setText("");
-	txtPhoneNumber.setText("");
-	txtEmailAddress.setText("");
-	txtDiscount.setText("");
+		});
 	}
 
-public void clearVehicle(){
-	txtSearchVehicle.setText("");
-	txtRegNr.setText("");
-	txtVehiclePrice.setText("");
-	txtVehicleType.setText("");
-	txtBrand.setText("");
-	txtModel.setText("");
-	txtModelYear.setText("");
-	txtLocation.setText("");
+	public void clearCustomer() {
+		txtSearchCustomer.setText("");
+		txtFirstName.setText("");
+		txtLastName.setText("");
+		txtStreetAddress.setText("");
+		txtZipCode.setText("");
+		txtCity.setText("");
+		txtCountry.setText("");
+		txtPhoneNumber.setText("");
+		txtEmailAddress.setText("");
+		txtDiscount.setText("");
 	}
 
-public void clearCreateOrder(){
-	txtCustomerNrNewOrder.setText("");
-	txtRentalDate.setText("");
+	public void clearVehicle() {
+		txtSearchVehicle.setText("");
+		txtRegNr.setText("");
+		txtVehiclePrice.setText("");
+		txtVehicleType.setText("");
+		txtBrand.setText("");
+		txtModel.setText("");
+		txtModelYear.setText("");
+		txtLocation.setText("");
 	}
-public void clearViewOrder(){
-	txtCustomerNrViewOrder.setText("");
-	txtRegNrViewOrder.setText("");
-	txtBrandViewOrder.setText("");
-	txtModelViewOrder.setText("");
-	txtModelYearViewOrder.setText("");
-	txtLocationViewOrder.setText("");
-	txtOrderDateViewOrder.setText("");
-	txtListPrice.setText("");
-	txtDiscountPrice.setText("");
+
+	public void clearCreateOrder() {
+		txtCustomerNrNewOrder.setText("");
+		txtRentalDate.setText("");
+	}
+
+	public void clearViewOrder() {
+		txtRegNrViewOrder.setText("");
+		txtBrandViewOrder.setText("");
+		txtModelViewOrder.setText("");
+		txtModelYearViewOrder.setText("");
+		txtLocationViewOrder.setText("");
+		txtOrderDateViewOrder.setText("");
+		txtListPrice.setText("");
+		txtDiscountPrice.setText("");
+	}
+
+	public void clearSelectedOrder() {
+		txtRegNrViewOrder.setText("");
+		txtRentalDate.setText("");
+		txtVehicleType.setText("");
+	}
+
+	public boolean intIsNotParseable(String string) {
+		try {
+			Integer.valueOf(string);
+			return false;
+			
+		} catch (NumberFormatException e) {
+			return true;
+			
+		}
+	}
+
+	public boolean doubleIsNotParseable(String string) {
+		try {
+			Double.valueOf(string);
+			return false;
+			
+		} catch (NumberFormatException e) {
+			return true;
+			
+		}
 	}
 }
-
-
-
-
-
-
-               
-        
-
-  
-        
-             
-    
