@@ -1,29 +1,31 @@
 package model;
+
 import java.util.*;
 
 public class CustomerRegistry {
-	
-	private HashMap <Integer, Customer> cRegistry;
+
+	private HashMap<Integer, Customer> cRegistry;
+
 	// Skapar en variabel av klassen HashMap som heter cRegistry, som ska användas för att hålla Customers.
-	
-	
+
 	public CustomerRegistry() {
-		setcRegistry(new HashMap <Integer, Customer>());
+		setcRegistry(new HashMap<Integer, Customer>());
 	}
+
 	// Skapar ett objekt av klassen HashMap.
-		
-	
-	public HashMap <Integer, Customer> getcRegistry() {
+
+	public HashMap<Integer, Customer> getcRegistry() {
 		return cRegistry;
 	}
-	public void setcRegistry(HashMap <Integer, Customer> cRegistry) {
+
+	public void setcRegistry(HashMap<Integer, Customer> cRegistry) {
 		this.cRegistry = cRegistry;
 	}
+
 	// Set & Get metoder för kundregistret.
-		
-	
-	public void addCustomer(Customer aCustomer){
+
+	public void addCustomer(Customer aCustomer) {
 		cRegistry.put(aCustomer.getCustomerNr(), aCustomer);
 	}
-	// Metod för att lägga till ett objekt av klassen Customer, in i kundregistret.
+	// Metod för att lägga till ett objekt av klassen Customer, in ikundregistret.
 }
