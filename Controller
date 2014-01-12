@@ -3,7 +3,6 @@ package controller;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import model.CustomerRegistry;
 import model.Customer;
 import model.VehicleRegistry;
@@ -12,129 +11,122 @@ import model.OrderRegistry;
 import model.Order;
 
 public class Controller {
-	
+
 	CustomerRegistry cr = new CustomerRegistry();
 	VehicleRegistry vr = new VehicleRegistry();
 	OrderRegistry or = new OrderRegistry();
+
+	Calendar calendar = Calendar.getInstance();
+	java.util.Date now = calendar.getTime();
+	final java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
+	final String orderDate = new SimpleDateFormat("yyMMdd").format(currentTimestamp);
+
+	public void addCustomer(int customerNr, String firstName, String lastName, String streetAdress, String zipCode, String city, String country, String phoneNr, String emailAddress, double discount) {
+		Customer aCustomer = new Customer(customerNr, firstName, lastName, streetAdress, zipCode, city, country, phoneNr, emailAddress, discount);
+		cr.addCustomer(aCustomer);
+
+	}
+
+	public Customer findCustomer(int customerNr) {
+		return cr.getcRegistry().get(customerNr);
+
+	}
+
+	public void removeCustomer(int customerNr) {
+		cr.getcRegistry().remove(customerNr);
+	}
+
+	public String getOrderDate() {
+		return orderDate.toString();
+	}
+
+	public int getCustomerRegistrySize() {
+		return cr.getcRegistry().size() + 1;
+	}
+
+	public void addVehicle(String regNr, String vehicleType, String brand, String model, String modelYear, String location, double vehiclePrice) {
+		Vehicle aVehicle = new Vehicle(regNr, vehicleType, brand, model, modelYear, location, vehiclePrice);
+		vr.addVehicle(aVehicle);
+	}
+
+	public Vehicle findVehicle(String regNr) {
+		return vr.getvRegistry().get(regNr);
+	}
+
+	public void removeVehicle(String regNr) {
+		vr.getvRegistry().remove(regNr);
+	}
+
+	public int getOrderRegistrySize() {
+		return or.getoRegistry().size() + 1;
+	}
+
+	public void createOrder(int orderNr, String orderDate, String rentalDate, Customer customer, Vehicle vehicle) {
+		Order aOrder = new Order(orderNr, orderDate, rentalDate, customer, vehicle);
+		or.addOrder(aOrder);
+		customer.addPreviousOrder(aOrder);
+	}
+
+	public Order getOrder(int orderNr) {
+		return or.getoRegistry().get(orderNr);
+	}
+
+	public void removeOrder(Order aOrder, Customer aCustomer, String rentalDate) {
+		aCustomer.getPreviousOrders().remove(aOrder);
+		aOrder.getVehicle().removeBookedDate(rentalDate);
+		or.getoRegistry().remove(aOrder);
+	}
+
 	
-    Calendar calendar = Calendar.getInstance();
-    java.util.Date now = calendar.getTime();
-    final java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());        
-    final String orderDate = new SimpleDateFormat("yyMMdd").format(currentTimestamp);
-	
-    public void addCustomer(int customerNr, String firstName, String lastName, String streetAdress, String zipCode, String city, String country, String phoneNr, String emailAddress, double discount){
-        Customer aCustomer = new Customer(customerNr, firstName, lastName, streetAdress, zipCode, city, country, phoneNr, emailAddress, discount);
-        cr.addCustomer(aCustomer);
-            
-    }
-    public Customer findCustomer(int customerNr){
-    	return cr.getcRegistry().get(customerNr);
-  
-    }
-    
-    public void removeCustomer(int customerNr){
-    	cr.getcRegistry().remove(customerNr);
-    }
-    public String getOrderDate() {
-    	return orderDate.toString();
-    }
-        
-    public int getCustomerRegistrySize() {
-    	return cr.getcRegistry().size() + 1;   	
-    }
-    
-    public void addVehicle(String regNr, String vehicleType, String brand, String model, String modelYear, String location, double vehiclePrice){
-    	Vehicle aVehicle = new Vehicle(regNr, vehicleType, brand, model, modelYear, location, vehiclePrice);
-    	vr.addVehicle(aVehicle);
-    }
-    
-    public Vehicle findVehicle(String regNr){
-    	return vr.getvRegistry().get(regNr);
-    }
-    
-    public void removeVehicle(String regNr){
-    	vr.getvRegistry().remove(regNr);
-    }    
-    public int getOrderRegistrySize() {
-    	return or.getoRegistry().size() + 1;
-    }
-    
-    public void createOrder (int orderNr, String orderDate, String rentalDate, Customer customer, Vehicle vehicle){
-    	Order aOrder = new Order(orderNr, orderDate, rentalDate, customer, vehicle);
-    	or.addOrder(aOrder);
-    	customer.addPreviousOrder(aOrder);
-    }
-    public Order getOrder (int orderNr){
-    	return or.getoRegistry().get(orderNr);
-    }
-    public void removeOrder(int orderNr){
-    	or.getoRegistry().remove(orderNr);	
-    	
-   
-    	
-    }
-    public void removeOrderFromCustomer (int customerNr, int orderNr){
-    	for (int i = 0; i > cr.getcRegistry().get(customerNr).getPreviousOrders().size(); i++){
-    		Order x = cr.getcRegistry().get(customerNr).getPreviousOrders().get(i);
-    			if (x.getOrderNr() == orderNr){
-    			cr.getcRegistry().get(customerNr).getPreviousOrders().remove(x);
-    			
-    		}
-    	}
-    	
-    }
-    	
-    
-    
-	public ArrayList<Vehicle> findAvailableTypes(String vehicleType){
+	public ArrayList<Vehicle> findAvailableTypesAtDate(String vehicleType, String rentalDate) {
 		ArrayList<Vehicle> list = new ArrayList<Vehicle>();
-		
-		for (Vehicle x: vr.getvRegistry().values()){
-			if (vehicleType.equals(x.getVehicleType())){
+
+		for (Vehicle x : vr.getvRegistry().values()) {
+			if (vehicleType.equals(x.getVehicleType()) && !(x.getBookedDates().contains(rentalDate))) {
 				list.add(x);
 			}
 		}
 		return list;
 	}
-	
-	
 
+	public void createTestObjects() {
+		Vehicle v1 = new Vehicle("ABC123", "Personbil", "Volvo", "XC60", "2009", "Lund", 1800);
+		Vehicle v2 = new Vehicle("CGI111", "Släpvagn", "Thule", "IX", "2007", "Göteborg", 500);
+		Vehicle v3 = new Vehicle("KGB007", "Husvagn", "Adrian", "P90", "2006", "Stockholm", 1200);
+		Vehicle v4 = new Vehicle("BBC000", "Personbil", "Saab", "9-5", "1988", "Göteborg", 800);
+		Vehicle v5 = new Vehicle("CIA000", "Personbil", "Mercedes", "CL500", "2010", "Lund", 2300);
+		Vehicle v6 = new Vehicle("CGI666", "Husvagn", "Campevogn AB", "PP00", "1999", "Kalmar", 300);
+		Vehicle v7 = new Vehicle("PPP999", "Båttrailer", "Båtajävel", "BH45", "1910", "Stockholm", 200);
+		Vehicle v9 = new Vehicle("AAA111", "Husvagn", "Adrian", "XP", "1989", "Lund", 2300);
+		Vehicle v10 = new Vehicle("BBB222", "Släpvagn", "Thule", "KB25", "2005", "Göteborg", 500);
+		Vehicle v11 = new Vehicle("CCC333", "Personbil kombi", "Volvo", "V70", "2009", "Linköping", 1600);
+		Vehicle v12 = new Vehicle("DDD444", "Båttrailer", "ASDF", "APA", "1987", "Lund", 700);
+		vr.addVehicle(v1);
+		vr.addVehicle(v2);
+		vr.addVehicle(v3);
+		vr.addVehicle(v4);
+		vr.addVehicle(v5);
+		vr.addVehicle(v6);
+		vr.addVehicle(v7);
+		vr.addVehicle(v9);
+		vr.addVehicle(v10);
+		vr.addVehicle(v11);
+		vr.addVehicle(v12);
 
-public void createTestObjects(){
-	Vehicle v1 = new Vehicle("ABC123", "Personbil", "Volvo", "XC60", "2009", "Lund", 1800);
-	Vehicle v2 = new Vehicle("CGI111", "Släpvagn", "Thule", "IX", "2007", "Göteborg", 500);
-	Vehicle v3 = new Vehicle("KGB007", "Husvagn", "Adrian", "P90", "2006", "Stockholm", 1200);
-	Vehicle v4 = new Vehicle("BBC000", "Personbil", "Saab", "9-5", "1988", "Göteborg", 800);
-	Vehicle v5 = new Vehicle("CIA000", "Personbil", "Mercedes", "CL500", "2010", "Lund", 2300);
-	Vehicle v6 = new Vehicle("CGI666", "Husvagn", "Campevogn AB", "PP00", "1999", "Kalmar", 300);
-	Vehicle v7 = new Vehicle("PPP999", "Båttrailer", "Båtajävel", "BH45", "1910", "Stockholm", 200);
-	Vehicle v9 = new Vehicle("AAA111", "Husvagn", "Adrian", "XP", "1989", "Lund", 2300);
- 	Vehicle v10 = new Vehicle("BBB222", "Släpvagn", "Thule", "KB25", "2005", "Göteborg", 500);
-	Vehicle v11 = new Vehicle("CCC333", "Personbil kombi", "Volvo", "V70", "2009", "Linköping", 1600);
-	Vehicle v12 = new Vehicle("DDD444", "Båttrailer", "ASDF", "APA", "1987", "Lund", 700);
-	vr.addVehicle(v1);
-	vr.addVehicle(v2);
-	vr.addVehicle(v3);
-	vr.addVehicle(v4);
-	vr.addVehicle(v5);
-	vr.addVehicle(v6);
-	vr.addVehicle(v7);
-	vr.addVehicle(v9);
-	vr.addVehicle(v10);
-	vr.addVehicle(v11);
-	vr.addVehicle(v12);
-	
-	Customer c1 = new Customer(1, "Richard", "Johansson", "Lyckelund 125", "57992", "Högsby", "Sverige", "0730603265", "rj@rj.se", 15);
-	Customer c2 = new Customer(2, "Jonas", "Mellström", "Gylleholmsgatan 11B", "22359", "Lund", "Sverige", "0737890988", "jm@jm.se", 10);
-	Customer c3 = new Customer(3, "Max", "Christensen", "Ulrikedalsvägen 2", "22360", "Lund", "Sverige", "07057585748", "max@max.se", 20);
-	cr.addCustomer(c1);
-	cr.addCustomer(c2);
-	cr.addCustomer(c3);
-	
-	Order o1 = new Order(1, getOrderDate(), "130101", c1, v1);
-	or.addOrder(o1);
-	c1.addPreviousOrder(o1);
-	
+		Customer c1 = new Customer(1, "Richard", "Johansson", "Lyckelund 125", "57992", "Högsby", "Sverige", "0730603265", "rj@rj.se", 15);
+		Customer c2 = new Customer(2, "Jonas", "Mellström",	"Gylleholmsgatan 11B", "22359", "Lund", "Sverige", "0737890988", "jm@jm.se", 10);
+		Customer c3 = new Customer(3, "Max", "Christensen",	"Ulrikedalsvägen 2", "22360", "Lund", "Sverige", "07057585748",	"max@max.se", 20);
+		cr.addCustomer(c1);
+		cr.addCustomer(c2);
+		cr.addCustomer(c3);
 
-}
+		Order o1 = new Order(1, getOrderDate(), "140101", c1, v1);
+		or.addOrder(o1);
+		c1.addPreviousOrder(o1);
+
+		Order o2 = new Order(2, getOrderDate(), "140102", c1, v2);
+		or.addOrder(o2);
+		c1.addPreviousOrder(o2);
+
+	}
 }
