@@ -16,8 +16,10 @@ public class Customer {
 	private double discountPercentage;
 	private double discountVariable;
 	private ArrayList<Order> previousOrders;
-	
-	public Customer (int customerNr, String firstName, String lastName, String streetAdress, String zipCode, String city, String country, String phoneNr, String emailAddress, double discountPercentage) {
+
+	public Customer(int customerNr, String firstName, String lastName,
+			String streetAdress, String zipCode, String city, String country,
+			String phoneNr, String emailAddress, double discountPercentage) {
 		setCustomerNr(customerNr);
 		setFirstName(firstName);
 		setLastName(lastName);
@@ -30,79 +32,100 @@ public class Customer {
 		setDiscountPercentage(discountPercentage);
 		setPreviousOrder(new ArrayList<Order>());
 	}
-	
-	
+
 	public int getCustomerNr() {
 		return customerNr;
 	}
+
 	public void setCustomerNr(int customerNr) {
 		this.customerNr = customerNr;
 	}
+
 	public String getFirstName() {
 		return firstName;
 	}
+
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+
 	public String getLastName() {
 		return lastName;
 	}
+
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
 	public String getStreetAdress() {
 		return streetAdress;
 	}
+
 	public void setStreetAdress(String streetAdress) {
 		this.streetAdress = streetAdress;
 	}
+
 	public String getZipCode() {
 		return zipCode;
 	}
+
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
+
 	public String getCity() {
 		return city;
 	}
+
 	public void setCity(String city) {
 		this.city = city;
 	}
+
 	public String getCountry() {
 		return country;
 	}
+
 	public void setCountry(String country) {
 		this.country = country;
 	}
+
 	public String getPhoneNr() {
 		return phoneNr;
 	}
+
 	public void setPhoneNr(String phoneNr) {
 		this.phoneNr = phoneNr;
 	}
+
 	public String getEmailAddress() {
 		return emailAddress;
 	}
+
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
 	}
+
 	public double getDiscountPercentage() {
 		return discountPercentage;
 	}
+
 	public void setDiscountPercentage(double discountPercentage) {
 		this.discountPercentage = discountPercentage;
 	}
+
 	public double getDiscountVariable() {
 		discountVariable = (100 - discountPercentage) / 100;
 		return discountVariable;
 	}
-	public void setPreviousOrder (ArrayList<Order> list){
-		this.previousOrders = list;
+
+	public void setPreviousOrder(ArrayList<Order> previousOrders) {
+		this.previousOrders = previousOrders;
 	}
-	public void addPreviousOrder (Order orderNr) {
-		previousOrders.add(orderNr);
+
+	public void addPreviousOrder(Order aOrder) {
+		previousOrders.add(aOrder);
 	}
-	
+
 	public ArrayList<Order> getPreviousOrders() {
 		return previousOrders;
 	}
