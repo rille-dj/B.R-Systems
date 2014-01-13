@@ -1,5 +1,6 @@
 package model;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Vehicle {
@@ -72,8 +73,9 @@ public class Vehicle {
 		this.location = location;
 	}
 
-	public double getVehiclePrice() {
-		return vehiclePrice;
+	public String getVehiclePrice() {
+		DecimalFormat df = new DecimalFormat("0.##");
+		return df.format(vehiclePrice);
 	}
 
 	public void setVehiclePrice(double vehiclePrice) {
