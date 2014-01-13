@@ -1,32 +1,6 @@
 package viewer;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.Document;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JComboBox;
-import javax.swing.ListSelectionModel;
-
-import model.Customer;
-import model.Order;
-import model.Vehicle;
-
-import javax.swing.JTable;
-import javax.swing.JSeparator;
 
 public class GUI extends JFrame {
 
@@ -101,6 +75,9 @@ public class GUI extends JFrame {
 		JPanel pnlCustomer = new JPanel();
 		pnlCustomer.setLayout(null);
 		jtp.addTab("Kund", pnlCustomer);
+		JSeparator separator = new JSeparator();
+		separator.setBounds(12, 100, 551, 2);
+		pnlCustomer.add(separator);
 
 		txtSearchCustomer = new JTextField();
 		txtSearchCustomer.setBounds(12, 42, 116, 22);
@@ -202,6 +179,42 @@ public class GUI extends JFrame {
 		lblCountry = new JLabel("Land");
 		lblCountry.setBounds(320, 326, 116, 16);
 		pnlCustomer.add(lblCountry);
+		
+		JLabel lblSelectCustomerNr = new JLabel("Välj kundnummer");
+		lblSelectCustomerNr.setBounds(320, 13, 116, 16);
+		pnlCustomer.add(lblSelectCustomerNr);
+		
+		final JComboBox customerComboBox = new JComboBox(controller.findAllCustomerNumbers());
+		customerComboBox.setBounds(320, 42, 116, 22);
+		pnlCustomer.add(customerComboBox);
+		
+		
+		JButton btnSelectedCustomer = new JButton("Visa kund");
+		btnSelectedCustomer.setBounds(449, 41, 115, 25);
+		pnlCustomer.add(btnSelectedCustomer);
+		btnSelectedCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				model.Customer tmp = controller.findCustomer(Integer.parseInt(customerComboBox.getSelectedItem().toString()));
+		
+				if (tmp != null) {
+					txtCustomerNr.setText(Integer.toString(tmp.getCustomerNr()));
+					txtDiscount.setText(tmp.getDiscountPercentage());
+					txtFirstName.setText(tmp.getFirstName());
+					txtLastName.setText(tmp.getLastName());
+					txtPhoneNumber.setText(tmp.getPhoneNr());
+					txtEmailAddress.setText(tmp.getEmailAddress());
+					txtStreetAddress.setText(tmp.getStreetAdress());
+					txtZipCode.setText(tmp.getZipCode());
+					txtCity.setText(tmp.getCity());
+					txtCountry.setText(tmp.getCountry());
+				}
+
+		else {
+			JOptionPane.showMessageDialog(null, "Angiven kund existerar inte!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+});
+	
 
 		JButton btnSearchCustomer = new JButton("Sök");
 		btnSearchCustomer.setBounds(140, 41, 116, 25);
@@ -211,7 +224,7 @@ public class GUI extends JFrame {
 				boolean cnumber = true;
 
 				if ((cnumber == intIsNotParseable(txtSearchCustomer.getText())) || (txtSearchCustomer.getText().trim().length() < 1)) {
-					JOptionPane.showMessageDialog(null,	"Vänligen ange kundnummer (i sifferformat)", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,	"Vänligen ange kundnummer (i sifferformat)!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
 				}
 				
 				else {
@@ -219,7 +232,7 @@ public class GUI extends JFrame {
 					
 					if (tmp != null) {
 						txtCustomerNr.setText(Integer.toString(tmp.getCustomerNr()));
-						txtDiscount.setText(Double.toString(tmp.getDiscountPercentage()));
+						txtDiscount.setText(tmp.getDiscountPercentage());
 						txtFirstName.setText(tmp.getFirstName());
 						txtLastName.setText(tmp.getLastName());
 						txtPhoneNumber.setText(tmp.getPhoneNr());
@@ -231,7 +244,7 @@ public class GUI extends JFrame {
 					}
 
 					else {
-						JOptionPane.showMessageDialog(null, "Kunden finns inte. Försök igen.", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Angiven kund existerar inte!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 
@@ -257,7 +270,7 @@ public class GUI extends JFrame {
 				boolean cdiscount = true;
 
 				if (cdiscount == doubleIsNotParseable(txtDiscount.getText())) {
-					JOptionPane.showMessageDialog(null,	"Vänligen ange procentrabatt (i sifferformat)",
+					JOptionPane.showMessageDialog(null,	"Vänligen ange procentrabatt (heltal i sifferformat)!",
 							"Felmeddelande", JOptionPane.ERROR_MESSAGE);
 				} else if (txtCustomerNr.getText().trim().length() > 0
 						&& txtFirstName.getText().trim().length() > 0
@@ -282,7 +295,7 @@ public class GUI extends JFrame {
 				}
 
 				else {
-					JOptionPane.showMessageDialog(null, "Vänligen fyll i alla fält", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Vänligen fyll i alla fält!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -290,17 +303,213 @@ public class GUI extends JFrame {
 		JButton btnRemoveCustomer = new JButton("Ta bort kund");
 		btnRemoveCustomer.setBounds(200, 418, 176, 25);
 		pnlCustomer.add(btnRemoveCustomer);
-		
-		JSeparator separator = new JSeparator();
-		separator.setBounds(12, 100, 551, 2);
-		pnlCustomer.add(separator);
 		btnRemoveCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.removeCustomer(Integer.parseInt(txtCustomerNr.getText()));
 				clearCustomer();
 			}
 		});
+		
+	
+		
+	
 
+		
+		
+		
+		
+		
+		
+		
+		// Fordon
+
+	
+		JPanel pnlVehicle = new JPanel();
+		pnlVehicle.setLayout(null);
+		JLabel lblVehicle = new JLabel();
+		lblVehicle.setBounds(220, 5, 136, 16);
+		pnlVehicle.add(lblVehicle);
+		jtp.addTab("Fordon", pnlVehicle);
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(12, 100, 551, 2);
+		pnlVehicle.add(separator_1);
+
+		lblSearchVehicle = new JLabel("Sök regnummer");
+		lblSearchVehicle.setBounds(12, 13, 116, 16);
+		pnlVehicle.add(lblSearchVehicle);
+
+		txtSearchVehicle = new JTextField();
+		txtSearchVehicle.setBounds(12, 42, 116, 22);
+		pnlVehicle.add(txtSearchVehicle);
+		txtSearchVehicle.setColumns(10);
+
+		JLabel lblRegNr = new JLabel("Regnummer");
+		lblRegNr.setBounds(12, 134, 116, 16);
+		pnlVehicle.add(lblRegNr);
+		
+		JLabel lblSelectedRegnr = new JLabel("Välj regnummer");
+		lblSelectedRegnr.setBounds(321, 13, 116, 16);
+		pnlVehicle.add(lblSelectedRegnr);
+
+		txtRegNr = new JTextField();
+		txtRegNr.setBounds(12, 163, 116, 22);
+		pnlVehicle.add(txtRegNr);
+		txtRegNr.setColumns(10);
+
+		txtVehicleType = new JTextField();
+		txtVehicleType.setBounds(12, 227, 244, 22);
+		pnlVehicle.add(txtVehicleType);
+		txtVehicleType.setColumns(10);
+
+		JLabel lblVehicleType_1 = new JLabel("Fordonstyp");
+		lblVehicleType_1.setBounds(12, 198, 116, 16);
+		pnlVehicle.add(lblVehicleType_1);
+
+		JLabel lblBrand = new JLabel("Märke");
+		lblBrand.setBounds(12, 262, 56, 16);
+		pnlVehicle.add(lblBrand);
+
+		txtBrand = new JTextField();
+		txtBrand.setBounds(12, 291, 116, 22);
+		pnlVehicle.add(txtBrand);
+		txtBrand.setColumns(10);
+
+		JLabel lblModel = new JLabel("Modell");
+		lblModel.setBounds(140, 262, 56, 16);
+		pnlVehicle.add(lblModel);
+
+		txtModel = new JTextField();
+		txtModel.setBounds(140, 291, 116, 22);
+		pnlVehicle.add(txtModel);
+		txtModel.setColumns(10);
+
+		JLabel lblModelYear = new JLabel("Årsmodell");
+		lblModelYear.setBounds(12, 326, 116, 16);
+		pnlVehicle.add(lblModelYear);
+
+		txtModelYear = new JTextField();
+		txtModelYear.setBounds(12, 355, 116, 22);
+		pnlVehicle.add(txtModelYear);
+		txtModelYear.setColumns(10);
+
+		JLabel lblLocation = new JLabel("Plats");
+		lblLocation.setBounds(140, 326, 56, 16);
+		pnlVehicle.add(lblLocation);
+
+		txtLocation = new JTextField();
+		txtLocation.setBounds(140, 355, 116, 22);
+		pnlVehicle.add(txtLocation);
+		txtLocation.setColumns(10);
+
+		JLabel lblVehiclePrice = new JLabel("Pris");
+		lblVehiclePrice.setBounds(140, 134, 116, 16);
+		pnlVehicle.add(lblVehiclePrice);
+
+		txtVehiclePrice = new JTextField();
+		txtVehiclePrice.setBounds(140, 163, 116, 22);
+		pnlVehicle.add(txtVehiclePrice);
+		txtVehiclePrice.setColumns(10);
+
+		final JComboBox vehicleComboBox = new JComboBox(controller.findAllRegNumbers());
+		vehicleComboBox.setBounds(321, 42, 116, 22);
+		pnlVehicle.add(vehicleComboBox);
+		
+		JButton btnSelectedVehicle = new JButton("Visa fordon");
+		btnSelectedVehicle.setBounds(449, 41, 116, 25);
+		pnlVehicle.add(btnSelectedVehicle);
+		
+		btnSelectedVehicle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				model.Vehicle tmp = controller.findVehicle(vehicleComboBox.getSelectedItem().toString());
+				if (tmp != null) {
+					txtRegNr.setText(tmp.getRegNr());
+					txtVehiclePrice.setText(tmp.getVehiclePrice());
+					txtVehicleType.setText(tmp.getVehicleType());
+					txtBrand.setText(tmp.getBrand());
+					txtModel.setText(tmp.getModel());
+					txtModelYear.setText(tmp.getModelYear());
+					txtLocation.setText(tmp.getLocation());
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Angivet fordon existerar inte!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+	
+
+		btnSearchVehicle = new JButton("Sök fordon");
+		btnSearchVehicle.setBounds(140, 41, 116, 25);
+		pnlVehicle.add(btnSearchVehicle);
+		
+		btnSearchVehicle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				model.Vehicle tmp = controller.findVehicle(txtSearchVehicle.getText());
+				if (tmp != null) {
+					txtRegNr.setText(tmp.getRegNr());
+					txtVehiclePrice.setText(tmp.getVehiclePrice());
+					txtVehicleType.setText(tmp.getVehicleType());
+					txtBrand.setText(tmp.getBrand());
+					txtModel.setText(tmp.getModel());
+					txtModelYear.setText(tmp.getModelYear());
+					txtLocation.setText(tmp.getLocation());
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Angivet fordon existerar inte!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+		
+		JButton btnCreateVehicle = new JButton("Spara fordon");
+		btnCreateVehicle.setBounds(12, 418, 176, 25);
+		pnlVehicle.add(btnCreateVehicle);
+		btnCreateVehicle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				boolean vprice = true;
+				
+				if (vprice == intIsNotParseable(txtVehiclePrice.getText())) {
+					JOptionPane.showMessageDialog(null,	"Vänligen ange pris (heltal i sifferformat)!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+				}
+				else if (txtRegNr.getText().trim().length() > 0
+						&& txtVehicleType.getText().trim().length() > 0
+						&& txtBrand.getText().trim().length() > 0
+						&& txtModel.getText().trim().length() > 0
+						&& txtModelYear.getText().trim().length() > 0
+						&& txtVehiclePrice.getText().trim().length() > 0
+						&& txtLocation.getText().trim().length() > 0) {
+					controller.addVehicle(txtRegNr.getText(), txtVehicleType.getText(), txtBrand.getText(), txtModel.getText(), txtModelYear.getText(),	txtLocation.getText(), Double.parseDouble(txtVehiclePrice.getText()));
+					clearVehicle();
+				}
+
+				else {
+					JOptionPane.showMessageDialog(null,	"Vänligen fyll i alla fält!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		});
+
+		JButton btnClearVehicle = new JButton("Rensa formulär");
+		btnClearVehicle.setBounds(389, 418, 176, 25);
+		pnlVehicle.add(btnClearVehicle);
+		btnClearVehicle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				clearVehicle();
+			}
+		});
+
+		JButton btnRemoveVehicle = new JButton("Ta bort fordon");
+		btnRemoveVehicle.setBounds(200, 418, 176, 25);
+		pnlVehicle.add(btnRemoveVehicle);
+		btnRemoveVehicle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controller.removeVehicle(txtRegNr.getText());
+				clearVehicle();
+			}
+		});
+
+	
+		
+	
+	
 		
 		
 		
@@ -336,9 +545,8 @@ public class GUI extends JFrame {
 		pnlOrder.add(txtRentalDate);
 		txtRentalDate.setColumns(10);
 
-		String[] vehicleTypes = { "Personbil", "Skåpbil", "Släpvagn", "Husvagn", "Båttrailer" };
-		final JComboBox comboBox = new JComboBox(vehicleTypes);
-		comboBox.setSelectedIndex(4);
+		
+		final JComboBox comboBox = new JComboBox(controller.findAllVehicleTypes());
 		comboBox.setBounds(268, 42, 169, 22);
 		pnlOrder.add(comboBox);
 
@@ -421,7 +629,7 @@ public class GUI extends JFrame {
 				String selected = comboBox.getSelectedItem().toString();
 				ArrayList<Vehicle> tmplist = controller.findAvailableTypesAtDate(selected, txtRentalDate.getText());
 				for (Vehicle tmp : tmplist) {
-					model.addRow(new String[] { tmp.getRegNr(), tmp.getBrand(),	tmp.getModel(), tmp.getModelYear(),	tmp.getLocation(), Double.toString(tmp.getVehiclePrice()) });
+					model.addRow(new String[] { tmp.getRegNr(), tmp.getBrand(),	tmp.getModel(), tmp.getModelYear(),	tmp.getLocation(), (tmp.getVehiclePrice()) });
 				}
 			}
 		});
@@ -447,7 +655,7 @@ public class GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				boolean cnumber = true;
 				if ((cnumber == intIsNotParseable(txtCustomerNrNewOrder.getText()))	|| (txtCustomerNrNewOrder.getText().trim().length() < 1)) {
-					JOptionPane.showMessageDialog(null,	"Vänligen ange kundnummer (i sifferformat)", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,	"Vänligen ange kundnummer (i sifferformat)!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
 				}
 				else {
 					Customer tmpcust = controller.findCustomer(Integer.parseInt(txtCustomerNrNewOrder.getText()));
@@ -458,7 +666,7 @@ public class GUI extends JFrame {
 						txtOrderNr.setText(Integer.toString(controller.getOrderRegistrySize()));
 					}
 					else {
-						JOptionPane.showMessageDialog(null,	"Angiven kund existerar inte", "Felmeddelande",	JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null,	"Angiven kund existerar inte!", "Felmeddelande",	JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -611,19 +819,19 @@ public class GUI extends JFrame {
 				boolean cnumber = true;
 				
 				if ((cnumber == intIsNotParseable(txtCustomerNrViewOrder.getText())) || (txtCustomerNrViewOrder.getText().trim().length() < 1)) {
-					JOptionPane.showMessageDialog(null,	"Vänligen ange kundnummer (i sifferformat)", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,	"Vänligen ange kundnummer (i sifferformat)!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
 				}
 				else {
 					int selectedCustomer = Integer.parseInt(txtCustomerNrViewOrder.getText());
 					Customer tmpcust = controller.findCustomer(selectedCustomer);
 
 					if (tmpcust == null) {
-						JOptionPane.showMessageDialog(null,	"Angiven kund existerar inte", "Felmeddelande",	JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null,	"Angiven kund existerar inte!", "Felmeddelande",	JOptionPane.ERROR_MESSAGE);
 					}
 					else {
 						ArrayList<Order> tmporderlist = controller.findCustomer(selectedCustomer).getPreviousOrders();
 						if (tmporderlist.isEmpty()) {
-							JOptionPane.showMessageDialog(null,	"Kunden har ingen orderhistorik", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null,	"Kunden har ingen orderhistorik!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
 						}
 						else {
 							for (Order tmporder : tmporderlist) {
@@ -665,7 +873,7 @@ public class GUI extends JFrame {
 				txtModelYearViewOrder.setText(controller.getOrder(tmpOrder).getVehicle().getModelYear());
 				txtLocationViewOrder.setText(controller.getOrder(tmpOrder).getVehicle().getLocation());
 				txtOrderDateViewOrder.setText(controller.getOrder(tmpOrder).getOrderDate());
-				txtListPrice.setText(Double.toString(controller.getOrder(tmpOrder).getVehicle().getVehiclePrice()));
+				txtListPrice.setText(controller.getOrder(tmpOrder).getVehicle().getVehiclePrice());
 				txtDiscountPrice.setText(Double.toString(controller.getOrder(tmpOrder).getOrderPrice()));
 			}
 		});
@@ -693,170 +901,19 @@ public class GUI extends JFrame {
 				model2.setRowCount(0);
 				clearViewOrder();
 				txtCustomerNrViewOrder.setText("");
+			
 			}
 		});
 
-		
-		
-		
-		
-		
-		
-		
-		
-		// Fordon
-
-		JPanel pnlVehicle = new JPanel();
-		pnlVehicle.setLayout(null);
-		JLabel lblVehicle = new JLabel();
-		lblVehicle.setBounds(220, 5, 136, 16);
-		pnlVehicle.add(lblVehicle);
-		jtp.addTab("Fordon", pnlVehicle);
-
-		lblSearchVehicle = new JLabel("Sök regnummer");
-		lblSearchVehicle.setBounds(12, 13, 116, 16);
-		pnlVehicle.add(lblSearchVehicle);
-
-		txtSearchVehicle = new JTextField();
-		txtSearchVehicle.setBounds(12, 42, 116, 22);
-		pnlVehicle.add(txtSearchVehicle);
-		txtSearchVehicle.setColumns(10);
-
-		JLabel lblRegNr = new JLabel("Regnummer");
-		lblRegNr.setBounds(12, 134, 116, 16);
-		pnlVehicle.add(lblRegNr);
-
-		txtRegNr = new JTextField();
-		txtRegNr.setBounds(12, 163, 116, 22);
-		pnlVehicle.add(txtRegNr);
-		txtRegNr.setColumns(10);
-
-		txtVehicleType = new JTextField();
-		txtVehicleType.setBounds(12, 227, 244, 22);
-		pnlVehicle.add(txtVehicleType);
-		txtVehicleType.setColumns(10);
-
-		JLabel lblVehicleType_1 = new JLabel("Fordonstyp");
-		lblVehicleType_1.setBounds(12, 198, 116, 16);
-		pnlVehicle.add(lblVehicleType_1);
-
-		JLabel lblBrand = new JLabel("Märke");
-		lblBrand.setBounds(12, 262, 56, 16);
-		pnlVehicle.add(lblBrand);
-
-		txtBrand = new JTextField();
-		txtBrand.setBounds(12, 291, 116, 22);
-		pnlVehicle.add(txtBrand);
-		txtBrand.setColumns(10);
-
-		JLabel lblModel = new JLabel("Modell");
-		lblModel.setBounds(140, 262, 56, 16);
-		pnlVehicle.add(lblModel);
-
-		txtModel = new JTextField();
-		txtModel.setBounds(140, 291, 116, 22);
-		pnlVehicle.add(txtModel);
-		txtModel.setColumns(10);
-
-		JLabel lblModelYear = new JLabel("Årsmodell");
-		lblModelYear.setBounds(12, 326, 116, 16);
-		pnlVehicle.add(lblModelYear);
-
-		txtModelYear = new JTextField();
-		txtModelYear.setBounds(12, 355, 116, 22);
-		pnlVehicle.add(txtModelYear);
-		txtModelYear.setColumns(10);
-
-		JLabel lblLocation = new JLabel("Plats");
-		lblLocation.setBounds(140, 326, 56, 16);
-		pnlVehicle.add(lblLocation);
-
-		txtLocation = new JTextField();
-		txtLocation.setBounds(140, 355, 116, 22);
-		pnlVehicle.add(txtLocation);
-		txtLocation.setColumns(10);
-
-		JLabel lblVehiclePrice = new JLabel("Pris");
-		lblVehiclePrice.setBounds(140, 134, 116, 16);
-		pnlVehicle.add(lblVehiclePrice);
-
-		txtVehiclePrice = new JTextField();
-		txtVehiclePrice.setBounds(140, 163, 116, 22);
-		pnlVehicle.add(txtVehiclePrice);
-		txtVehiclePrice.setColumns(10);
-
-		JButton btnCreateVehicle = new JButton("Spara fordon");
-		btnCreateVehicle.setBounds(12, 418, 176, 25);
-		pnlVehicle.add(btnCreateVehicle);
-		btnCreateVehicle.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				boolean vprice = true;
-				
-				if (vprice == intIsNotParseable(txtVehiclePrice.getText())) {
-					JOptionPane.showMessageDialog(null,	"Vänligen ange pris (i sifferformat)", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
-				}
-				else if (txtRegNr.getText().trim().length() > 0
-						&& txtVehicleType.getText().trim().length() > 0
-						&& txtBrand.getText().trim().length() > 0
-						&& txtModel.getText().trim().length() > 0
-						&& txtModelYear.getText().trim().length() > 0
-						&& txtVehiclePrice.getText().trim().length() > 0
-						&& txtLocation.getText().trim().length() > 0) {
-					controller.addVehicle(txtRegNr.getText(), txtVehicleType.getText(), txtBrand.getText(), txtModel.getText(), txtModelYear.getText(),	txtLocation.getText(), Double.parseDouble(txtVehiclePrice.getText()));
-					clearVehicle();
-				}
-
-				else {
-					JOptionPane.showMessageDialog(null,	"Vänligen fyll i alla fält", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
-
-		JButton btnClearVehicle = new JButton("Rensa formulär");
-		btnClearVehicle.setBounds(389, 418, 176, 25);
-		pnlVehicle.add(btnClearVehicle);
-		btnClearVehicle.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				clearVehicle();
-			}
-		});
-
-		JButton btnRemoveVehicle = new JButton("Ta bort fordon");
-		btnRemoveVehicle.setBounds(200, 418, 176, 25);
-		pnlVehicle.add(btnRemoveVehicle);
-		btnRemoveVehicle.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				controller.removeVehicle(txtRegNr.getText());
-				clearVehicle();
-			}
-		});
-
-		btnSearchVehicle = new JButton("Sök fordon");
-		btnSearchVehicle.setBounds(140, 41, 116, 25);
-		pnlVehicle.add(btnSearchVehicle);
-		
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(12, 100, 551, 2);
-		pnlVehicle.add(separator_1);
-		btnSearchVehicle.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				model.Vehicle tmp = controller.findVehicle(txtSearchVehicle.getText());
-				if (tmp != null) {
-					txtRegNr.setText(tmp.getRegNr());
-					txtVehiclePrice.setText(Double.toString(tmp.getVehiclePrice()));
-					txtVehicleType.setText(tmp.getVehicleType());
-					txtBrand.setText(tmp.getBrand());
-					txtModel.setText(tmp.getModel());
-					txtModelYear.setText(tmp.getModelYear());
-					txtLocation.setText(tmp.getLocation());
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "Fordonet finns inte. Försök igen.", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		});
 	}
+		
+		
+		
+		
+		
+		
+		
+
 
 	public void clearCustomer() {
 		txtSearchCustomer.setText("");
