@@ -16,6 +16,7 @@ public class Order {
 		setCustomer(customer);
 		setVehicle(vehicle);
 		vehicle.addBookedDate(rentalDate);
+		customer.addPreviousOrder(this);
 	}
 
 	public int getOrderNr() {
@@ -51,7 +52,7 @@ public class Order {
 	}
 
 	public double getOrderPrice() {
-		orderPrice = vehicle.getVehiclePrice() * customer.getDiscountVariable();
+		orderPrice = Double.parseDouble(vehicle.getVehiclePrice()) * customer.getDiscountVariable();
 		return orderPrice;
 	}
 
