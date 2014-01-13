@@ -64,7 +64,6 @@ public class Controller {
 	public void createOrder(int orderNr, String orderDate, String rentalDate, Customer customer, Vehicle vehicle) {
 		Order aOrder = new Order(orderNr, orderDate, rentalDate, customer, vehicle);
 		or.addOrder(aOrder);
-		customer.addPreviousOrder(aOrder);
 	}
 
 	public Order getOrder(int orderNr) {
@@ -76,8 +75,42 @@ public class Controller {
 		aOrder.getVehicle().removeBookedDate(rentalDate);
 		or.getoRegistry().remove(aOrder);
 	}
-
 	
+	public String[] findAllCustomerNumbers () {
+		ArrayList<String> list = new ArrayList<String>();
+		
+		for (Customer x : cr.getcRegistry().values()) {
+			String cNr = Integer.toString(x.getCustomerNr());
+			list.add(cNr);
+		}
+		String[] myArray = list.toArray(new String[0]);
+		return myArray;
+	}
+	
+	public String[] findAllRegNumbers (){
+		ArrayList<String> list = new ArrayList<String>();
+		
+		for (Vehicle x : vr.getvRegistry().values()) {
+			String regNr = x.getRegNr();
+			list.add(regNr);
+		}
+		String[] myArray = list.toArray(new String[0]);
+		return myArray;
+	}
+
+	public String[] findAllVehicleTypes (){
+		ArrayList<String> list = new ArrayList<String>();
+		
+		for (Vehicle x : vr.getvRegistry().values()) {
+			String vtype = x.getVehicleType();
+			if (!list.contains(vtype)){
+				list.add(vtype);
+			}
+		}
+		String[] myArray = list.toArray(new String[0]);
+		return myArray;
+	}
+		
 	public ArrayList<Vehicle> findAvailableTypesAtDate(String vehicleType, String rentalDate) {
 		ArrayList<Vehicle> list = new ArrayList<Vehicle>();
 
@@ -122,11 +155,11 @@ public class Controller {
 
 		Order o1 = new Order(1, getOrderDate(), "140101", c1, v1);
 		or.addOrder(o1);
-		c1.addPreviousOrder(o1);
+		
 
 		Order o2 = new Order(2, getOrderDate(), "140102", c1, v2);
 		or.addOrder(o2);
-		c1.addPreviousOrder(o2);
+		
 
 	}
 }
