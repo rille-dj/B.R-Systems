@@ -8,26 +8,27 @@ import model.CustomerRegistry;
 import model.Vehicle;
 import model.VehicleRegistry;
 import model.Order;
-import model.OrderRegistry;
 
 public class MainClass {
 	public static void main(String[] args) {
+		
 		
 		GUI tp = new GUI();
 		
 		/*
 		Controller controller = new Controller();
 		Scanner scanner = new Scanner(System.in);
-		controller.addCustomer(1, "Julia", "Berglund", "Tunavägen 39", "22363", "Lund", "Sverige", "0700001231", "julia@berglund.se", 20);
-		controller.addCustomer(2, "Richard", "Johansson", "Magistratsvägen 57", "22644", "Lund", "Sverige", "0730603265", "richard@johansson.se", 10);
-		controller.addCustomer(3, "Erika", "Strömberg", "Tunavägen 39", "22363", "Lund", "Sverige", "0762117252", "erika.stromberg@gmail.com", 10);
-		controller.addVehicle("AAA000", "SUV", "Porsche", "Cayenne", "2009", "Lund", 1650);
-		controller.addVehicle("BBB111", "SUV", "Volvo", "XC60", "2011", "Göteborg", 1200);
-		controller.addVehicle("CCC333", "SUV", "Ferrari", "Dolomite", "2014", "Stockholm", 2800);		
-		controller.addVehicle("DDD333", "Personbil", "Saab", "9-3", "2004", "Lund", 750);
+		controller.createCustomer(1, "Julia", "Berglund", "Tunavägen 39", "22363", "Lund", "Sverige", "0700001231", "julia@berglund.se", 20);
+		controller.createCustomer(2, "Richard", "Johansson", "Magistratsvägen 57", "22644", "Lund", "Sverige", "0730603265", "richard@johansson.se", 10);
+		controller.createCustomer(3, "Erika", "Strömberg", "Tunavägen 39", "22363", "Lund", "Sverige", "0762117252", "erika.stromberg@gmail.com", 10);
+		controller.createVehicle("AAA000", "SUV", "Porsche", "Cayenne", "2009", "Lund", 1650);
+		controller.createVehicle("BBB111", "SUV", "Volvo", "XC60", "2011", "Göteborg", 1200);
+		controller.createVehicle("CCC333", "SUV", "Ferrari", "Dolomite", "2014", "Stockholm", 2800);		
+		controller.createVehicle("DDD333", "Personbil", "Saab", "9-3", "2004", "Lund", 750);
 		controller.createOrder(1, controller.getOrderDate(), "140201", controller.findCustomer(1), controller.findVehicle("AAA000"));
 		controller.createOrder(2, controller.getOrderDate(), "140201", controller.findCustomer(1), controller.findVehicle("BBB111"));
 		controller.createOrder(3, controller.getOrderDate(), "140120", controller.findCustomer(3), controller.findVehicle("CCC333"));
+		controller.createOrder(4, controller.getOrderDate(), "141212", controller.findCustomer(1), controller.findVehicle("DDD333"));
 		*/
 		
 		/*
@@ -53,6 +54,17 @@ public class MainClass {
 		}
 		*/
 		
+		/*
+		System.out.println("Testar metoden findAllOrders och skriver ut ordernumrena från alla ordrar som finns i systemet.");
+		for (Order o : controller.findAllOrders()){
+			System.out.println(o.getOrderNr());
+		*/
+		
+		/*
+		System.out.println("Testar metoden getOrder och skriver ut ordernummer och regnummer för ordernummer 1.");
+		System.out.println(controller.getOrder(1).getOrderNr() + ", " + controller.getOrder(1).getVehicle().getRegNr());
+		*/
+		
+		}
 		
 	}
-}
