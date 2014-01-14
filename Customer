@@ -33,6 +33,7 @@ public class Customer {
 		setDiscountPercentage(discountPercentage);
 		setPreviousOrder(new ArrayList<Order>());
 	}
+	// Skapar konstruktor för att skapa kund. För varje objekt av Customer skapas alltid en ArrayList av ordrar som heter previousOrders.
 
 	public int getCustomerNr() {
 		return customerNr;
@@ -110,6 +111,7 @@ public class Customer {
 		DecimalFormat df = new DecimalFormat("0.##");
 		return df.format(discountPercentage);
 	}
+	// DecimalFormat formaterar discountpercentage till en String och bestämmer att det inte ska vara några decimaler i talet som returneras.
 
 	public void setDiscountPercentage(double discountPercentage) {
 		this.discountPercentage = discountPercentage;
@@ -119,6 +121,7 @@ public class Customer {
 		discountVariable = (100 - discountPercentage) / 100;
 		return discountVariable;
 	}
+	// Beräknar och returnerar discountvariable som är baserat på discountPercentage.
 
 	public void setPreviousOrder(ArrayList<Order> previousOrders) {
 		this.previousOrders = previousOrders;
