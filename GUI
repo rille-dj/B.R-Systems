@@ -367,8 +367,9 @@ public class GUI extends JFrame {
 						&& txtPhoneNumber.getText().trim().length() > 0
 						&& txtEmailAddress.getText().trim().length() > 0
 						&& txtDiscount.getText().trim().length() > 0) {
-					// Om alla JTextfieldsen har fler än 0 tecken körs metoden addCustomer och den plockar alla attribut till den nya kunden från JTextFieldsen
-					controller.addCustomer(
+					// Om alla JTextfieldsen har fler än 0 tecken körs metoden createCustomer och den plockar alla attribut till den nya kunden från JTextFieldsen
+					ArrayList<Order> tmpList = controller.findCustomer(Integer.parseInt(txtCustomerNr.getText())).getPreviousOrders();
+					controller.createCustomer(
 							Integer.parseInt(txtCustomerNr.getText()),
 							txtFirstName.getText(), txtLastName.getText(),
 							txtStreetAddress.getText(), txtZipCode.getText(),
@@ -377,6 +378,8 @@ public class GUI extends JFrame {
 							txtEmailAddress.getText(),
 							Double.parseDouble(txtDiscount.getText()));
 					
+					controller.findCustomer(Integer.parseInt(txtCustomerNr.getText())).getPreviousOrders().addAll(tmpList);
+					tmpList.clear();
 					clearCustomer();
 					txtCustomerNr.setText(Integer.toString(controller.getCustomerRegistrySize()));
 					// Rensar kunddetaljer och uppdaterar txtCustomerNr till den nya storleken på kundregistret.
@@ -581,7 +584,7 @@ public class GUI extends JFrame {
 						&& txtModelYear.getText().trim().length() > 0
 						&& txtVehiclePrice.getText().trim().length() > 0
 						&& txtLocation.getText().trim().length() > 0) {
-					controller.addVehicle(txtRegNr.getText(), txtVehicleType.getText(), txtBrand.getText(), txtModel.getText(), txtModelYear.getText(),	txtLocation.getText(), Double.parseDouble(txtVehiclePrice.getText()));
+					controller.createVehicle(txtRegNr.getText(), txtVehicleType.getText(), txtBrand.getText(), txtModel.getText(), txtModelYear.getText(),	txtLocation.getText(), Double.parseDouble(txtVehiclePrice.getText()));
 					// Om alla JTextFields har mer än 0 tecken, skapar fordon med metoden addVehicle och den plockar alla attribut till det nya fordonet från JTextFieldsen.
 					clearVehicle();
 					// Rensar fordonsdetaljer med metoden clearVehicle.
@@ -1033,14 +1036,14 @@ public class GUI extends JFrame {
 
 		btnRemoveOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Customer selectedCustomer = controller.findCustomer(Integer.parseInt(txtCustomerNrViewOrder.getText()));
-				// Tar kundnumret från txtCustomerNrViewOrder och hämtar kund med metoden findCustomer. Lägger kunden i variablen selectedCustomer.
-				controller.removeOrder(controller.getOrder(Integer.parseInt(table2.getValueAt(table2.getSelectedRow(), 1).toString())), selectedCustomer, table2.getValueAt(table2.getSelectedRow(), 2).toString());
-				// Använder metoden removeOrder(Order, Customer, rentalDate) och raderar ordern.
+				int selectedCustomerNr = Integer.parseInt(txtCustomerNrViewOrder.getText());
+				// Tar kundnumret från txtCustomerNrViewOrder det i variablen selectedCustomerNr.
+				controller.removeOrder(controller.getOrder(Integer.parseInt(table2.getValueAt(table2.getSelectedRow(), 1).toString())), selectedCustomerNr);
+				// Använder metoden removeOrder och raderar ordern.
 				model2.setRowCount(0);
 				clearViewOrder();
 				// Tömmer tabellen och rensar orderdetaljer.
-				ArrayList<Order> tmporderlist = controller.findCustomer(selectedCustomer.getCustomerNr()).getPreviousOrders();
+				ArrayList<Order> tmporderlist = controller.findCustomer(selectedCustomerNr).getPreviousOrders();
 				// Hämtar valda kundens resterande previousOrders och lägger dom i ArrayListen tmporderlist.
 				for (Order tmporder : tmporderlist) {
 					model2.addRow(new String[] {
