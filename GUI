@@ -1026,7 +1026,7 @@ public class GUI extends JFrame {
 				txtLocationViewOrder.setText(controller.getOrder(selectedOrderNr).getVehicle().getLocation());
 				txtOrderDateViewOrder.setText(controller.getOrder(selectedOrderNr).getOrderDate());
 				txtListPrice.setText(controller.getOrder(selectedOrderNr).getVehicle().getVehiclePrice());
-				txtDiscountPrice.setText(Double.toString(controller.getOrder(selectedOrderNr).getOrderPrice()));
+				txtDiscountPrice.setText(controller.getOrder(selectedOrderNr).getOrderPrice());
 				//Använder selectedOrderNr för att hämta order -> hämta fordon -> hämta fordonets attribut, och sedan skriva ut dom i textfälten.
 			}
 		});
