@@ -14,7 +14,7 @@ Package: main.method
 Classes: MainClass
 
 Package: model
-Classes: Customer, CustomerRegistry, Vehicle, VehicleRegistry, Order, OrderRegistry
+Classes: Customer, CustomerRegistry, Vehicle, VehicleRegistry, Order
 
 Package: viewer
 Classes: GUI
