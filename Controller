@@ -8,31 +8,30 @@ import model.CustomerRegistry;
 import model.Customer;
 import model.VehicleRegistry;
 import model.Vehicle;
-import model.OrderRegistry;
 import model.Order;
 
 public class Controller {
 
 	CustomerRegistry cr = new CustomerRegistry();
 	VehicleRegistry vr = new VehicleRegistry();
-	OrderRegistry or = new OrderRegistry();
+
 	
 	// Skapar instanser av kundregister, orderregister och fordonsregister.
 
 	Calendar calendar = Calendar.getInstance();
 	java.util.Date now = calendar.getTime();
 	final java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
-	final String orderDate = new SimpleDateFormat("yyMMdd").format(currentTimestamp);
+	final String orderDateTimeStamp = new SimpleDateFormat("yyMMdd").format(currentTimestamp);
 	
 	// Hämtar datum om tid och formaterar det så att det ska vara yyMMdd. currentTimestamp känner av när den instansieras och sparar datumet i Stringen orderDate.
 
-	public void addCustomer(int customerNr, String firstName, String lastName, String streetAdress, String zipCode, String city, String country, String phoneNr, String emailAddress, double discount) {
+	public void createCustomer(int customerNr, String firstName, String lastName, String streetAdress, String zipCode, String city, String country, String phoneNr, String emailAddress, double discount) {
 		Customer aCustomer = new Customer(customerNr, firstName, lastName, streetAdress, zipCode, city, country, phoneNr, emailAddress, discount);
 		cr.addCustomer(aCustomer);
 	}
 	// Metod för att skapa kund. Lägger samtidigt till kunden i kundregister.
 
-	public Customer findCustomer(int customerNr) {
+	public Customer getCustomer(int customerNr) {
 		return cr.getcRegistry().get(customerNr);
 	}
 	// Tar in ett kundnummer som key och returnerar den Customer som nyckeln hör till.
@@ -42,8 +41,8 @@ public class Controller {
 	}
 	// Tar in ett kundnummer och raderar den Customer som nyckeln hör till.
 	
-	public String getOrderDate() {
-		return orderDate.toString();
+	public String getOrderDateTimeStamp() {
+		return orderDateTimeStamp.toString();
 	}
 	// Returnerar orderDate (som från början är av klassen Date men omvandlas till String).
 
@@ -52,13 +51,13 @@ public class Controller {
 	}
 	// Returnerar storleken på kundregistret +1.
 
-	public void addVehicle(String regNr, String vehicleType, String brand, String model, String modelYear, String location, double vehiclePrice) {
+	public void createVehicle(String regNr, String vehicleType, String brand, String model, String modelYear, String location, double vehiclePrice) {
 		Vehicle aVehicle = new Vehicle(regNr, vehicleType, brand, model, modelYear, location, vehiclePrice);
 		vr.addVehicle(aVehicle);
 	}
 	// Skapar fordon och lägger samtidigt till fordonet i fordonsregistret.
 
-	public Vehicle findVehicle(String regNr) {
+	public Vehicle getVehicle(String regNr) {
 		return vr.getvRegistry().get(regNr);
 	}
 	// Tar in regnummer som key och returnerar det Vehicle som nyckeln tillhör.
@@ -66,32 +65,50 @@ public class Controller {
 	public void removeVehicle(String regNr) {
 		vr.getvRegistry().remove(regNr);
 	}
-	// Tar in ett regnummer som nyckel och raderar det Vehicle som nyckeln tillhör.
-
-	public int getOrderRegistrySize() {
-		return or.getoRegistry().size() + 1;
-	}
-	// Returnerar storleken på orderregistret +1.
+	// Tar in ett regnummer som nyckel och raderar det Vehicle som nyckeln tillhör.	
 
 	public void createOrder(int orderNr, String orderDate, String rentalDate, Customer customer, Vehicle vehicle) {
 		Order aOrder = new Order(orderNr, orderDate, rentalDate, customer, vehicle);
-		or.addOrder(aOrder);
+		customer.addPreviousOrder(aOrder);
+		vehicle.addBookedDate(rentalDate);
 	}
 	// Skapar en Order och lägger samtidigt till ordern i orderregistret.
 
 	public Order getOrder(int orderNr) {
-		return or.getoRegistry().get(orderNr);
+		Order orderToReturn = null;
+		for (Order o : getAllOrders()){
+			if (orderNr == o.getOrderNr()){
+				orderToReturn = o;
+			}
+		}
+		return orderToReturn;
 	}
-	// Tar in ett ordernummer som key och returnerar en Order.
+	// Tar in ett ordernummer, söker igenom alla ordrar med metoden findAllOrders och returnerar en Order.
 
-	public void removeOrder(Order aOrder, Customer aCustomer, String rentalDate) {
-		aCustomer.getPreviousOrders().remove(aOrder);
-		aOrder.getVehicle().removeBookedDate(rentalDate);
-		or.getoRegistry().remove(aOrder);
+	public void removeOrder(Order aOrder, int customerNr) {
+		getCustomer(customerNr).removePreviousOrder(aOrder);
+		aOrder.getVehicle().removeBookedDate(aOrder.getRentalDate());
 	}
 	// Tar in Order, Customer och rentaldate:String. Raderar ordern från kundens previousOrders, raderar datumet från fordonets bookedDates och raderar ordern från orderregistret.
 	
-	public ArrayList<String> findAllCustomerNumbers () {
+	public ArrayList<Order> getAllOrders () {
+		ArrayList<Order> partialList = new ArrayList<Order>();
+		ArrayList<Order> fullList = new ArrayList<Order>();
+		for (Customer c : cr.getcRegistry().values()) {
+			partialList = c.getPreviousOrders();	
+			fullList.addAll(partialList);
+		}
+		return fullList;
+	}
+	// Loopar igenom kundregistret efter alla kunder. Hämtar varje kunds previousOrders och lägger i partialLlist. Med addAll lägger vi till alla partialLists i FullList och får ut en ArrayList med alla kunders alla ordrar.
+	
+	public int getAllOrdersSize() {
+		int size = getAllOrders().size();
+		return size + 1;
+	}
+	// Returnerar storleken på orderregistret +1.
+	
+	public ArrayList<String> getAllCustomerNumbers () {
 		ArrayList<String> list = new ArrayList<String>();
 		
 		for (Customer x : cr.getcRegistry().values()) {
@@ -102,7 +119,7 @@ public class Controller {
 	}
 	// Loopar igenom kundregistret och fångar upp alla kundnummer i kundregistret, lägger dom i ArrayListen list, för att sedan returnera list. 
 	
-	public ArrayList<String> findAllRegNumbers (){
+	public ArrayList<String> getAllRegNumbers (){
 		ArrayList<String> list = new ArrayList<String>();
 		
 		for (Vehicle x : vr.getvRegistry().values()) {
@@ -114,7 +131,7 @@ public class Controller {
 	// Loopar igenom fordonsregistret och fångar upp alla regnummer i kundregistret, lägger dom i ArrayListen list, för att sedan returnera list. 
 
 
-	public ArrayList<String> findAllVehicleTypes (){
+	public ArrayList<String> getAllVehicleTypes (){
 		ArrayList<String> list = new ArrayList<String>();
 		
 		for (Vehicle x : vr.getvRegistry().values()) {
@@ -128,7 +145,7 @@ public class Controller {
 	// Loopar igenom fordonsregistret och fångar upp alla fordonstyper i kundregistret, lägger dom i ArrayListen list, för att sedan returnera list. 
 	// Om listan redan innehåller fordonstypen läggs den inte till i listan eftersom vi inte vill ha dubletter i listan.
 	
-	public ArrayList<Vehicle> findAvailableTypesAtDate(String vehicleType, String rentalDate) {
+	public ArrayList<Vehicle> getAvailableTypesAtDate(String vehicleType, String rentalDate) {
 		ArrayList<Vehicle> list = new ArrayList<Vehicle>();
 
 		for (Vehicle x : vr.getvRegistry().values()) {
@@ -143,41 +160,29 @@ public class Controller {
 
 
 	public void createTestObjects() {
-		Vehicle v1 = new Vehicle("ABC123", "Personbil", "Volvo", "XC60", "2009", "Lund", 1800);
-		Vehicle v2 = new Vehicle("CGI111", "Släpvagn", "Thule", "IX", "2007", "Göteborg", 500);
-		Vehicle v3 = new Vehicle("KGB007", "Husvagn", "Adrian", "P90", "2006", "Stockholm", 1200);
-		Vehicle v4 = new Vehicle("BBC000", "Personbil", "Saab", "9-5", "1988", "Göteborg", 800);
-		Vehicle v5 = new Vehicle("CIA000", "Personbil", "Mercedes", "CL500", "2010", "Lund", 2300);
-		Vehicle v6 = new Vehicle("CGI666", "Husvagn", "Drabant", "PP00", "1999", "Kalmar", 300);
-		Vehicle v7 = new Vehicle("PPP999", "Båttrailer", "Nimbus", "BH45", "1998", "Stockholm", 200);
-		Vehicle v9 = new Vehicle("AAA111", "Husvagn", "Adrian", "XP", "1989", "Lund", 2300);
-		Vehicle v10 = new Vehicle("BBB222", "Släpvagn", "Thule", "KB25", "2005", "Göteborg", 500);
-		Vehicle v11 = new Vehicle("CCC333", "Personbil kombi", "Volvo", "V70", "2009", "Linköping", 1600);
-		Vehicle v12 = new Vehicle("DDD444", "Båttrailer", "Majava", "2000", "1987", "Lund", 700);
-		vr.addVehicle(v1);
-		vr.addVehicle(v2);
-		vr.addVehicle(v3);
-		vr.addVehicle(v4);
-		vr.addVehicle(v5);
-		vr.addVehicle(v6);
-		vr.addVehicle(v7);
-		vr.addVehicle(v9);
-		vr.addVehicle(v10);
-		vr.addVehicle(v11);
-		vr.addVehicle(v12);
-
-		Customer c1 = new Customer(1, "Richard", "Johansson", "Lyckelund 125", "57992", "Högsby", "Sverige", "0730603265", "rj@rj.se", 15);
-		Customer c2 = new Customer(2, "Jonas", "Mellström",	"Gylleholmsgatan 11B", "22359", "Lund", "Sverige", "0737890988", "jm@jm.se", 10);
-		Customer c3 = new Customer(3, "Max", "Christensen",	"Ulrikedalsvägen 2", "22360", "Lund", "Sverige", "07057585748",	"max@max.se", 20);
-		cr.addCustomer(c1);
-		cr.addCustomer(c2);
-		cr.addCustomer(c3);
-
-		Order o1 = new Order(1, getOrderDate(), "140101", c1, v1);
-		or.addOrder(o1);
-		Order o2 = new Order(2, getOrderDate(), "140102", c1, v2);
-		or.addOrder(o2);
 		
+		createVehicle("ABC123", "SUV", "Volvo", "XC60", "2009", "Lund", 1800);
+		createVehicle("CGI111", "Släpvagn", "Thule", "IX", "2007", "Göteborg", 500);
+		createVehicle("KGB007", "Husvagn", "Adrian", "P90", "2006", "Stockholm", 1200);
+		createVehicle("BBC000", "Personbil", "Saab", "9-5", "1988", "Göteborg", 800);
+		createVehicle("CIA000", "Personbil", "Mercedes", "CL500", "2010", "Lund", 2300);
+		createVehicle("CGI666", "Husvagn", "Drabant", "90L", "1999", "Kalmar", 300);
+		createVehicle("PPP999", "Båttrailer", "Nimbus", "BH45", "1998", "Stockholm", 200);
+		createVehicle("AAA111", "Husvagn", "Adrian", "XP", "1989", "Lund", 2300);
+		createVehicle("BBB222", "Släpvagn", "Thule", "KB25", "2005", "Göteborg", 500);
+		createVehicle("DDD444", "Båttrailer", "Majava", "2000", "1987", "Lund", 700);
+		createVehicle("UIO196", "Båttrailer", "Nimbus", "BH60", "2004", "Helsingborg", 300);
+		createVehicle("JPG990", "Sportbil", "Lamborghini", "Murcielago", "2009", "Lund", 3900);
+		createVehicle("BMP666", "Sportbil", "Ferrari", "Enzo", "2011", "Lund", 3800);
+		createVehicle("KKL156", "SUV", "Porsche", "Cayenne", "2010", "Lund", 1900);
+
+		createCustomer(1, "Richard", "Johansson", "Lyckelund 125", "57992", "Högsby", "Sverige", "0730603265", "rj@rj.se", 15);
+		createCustomer(2, "Jonas", "Mellström",	"Gylleholmsgatan 11B", "22359", "Lund", "Sverige", "0737890988", "jm@jm.se", 10);
+		createCustomer(3, "Max", "Christensen",	"Ulrikedalsvägen 2", "22360", "Lund", "Sverige", "07057585748",	"max@max.se", 20);
+		createCustomer(4, "Julia", "Berglund", "Tunavägen 39", "22633", "Lund", "Sverige", "0730415066", "julia@berglund.se", 30);
+
+		createOrder(1, getOrderDateTimeStamp(), "140116", getCustomer(1), getVehicle("UIO196"));
+		createOrder(2, getOrderDateTimeStamp(), "140126", getCustomer(3), getVehicle("PPP999"));
 
 	}
 }
