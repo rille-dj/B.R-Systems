@@ -148,12 +148,12 @@ public class Controller {
 		Vehicle v3 = new Vehicle("KGB007", "Husvagn", "Adrian", "P90", "2006", "Stockholm", 1200);
 		Vehicle v4 = new Vehicle("BBC000", "Personbil", "Saab", "9-5", "1988", "Göteborg", 800);
 		Vehicle v5 = new Vehicle("CIA000", "Personbil", "Mercedes", "CL500", "2010", "Lund", 2300);
-		Vehicle v6 = new Vehicle("CGI666", "Husvagn", "Campevogn AB", "PP00", "1999", "Kalmar", 300);
-		Vehicle v7 = new Vehicle("PPP999", "Båttrailer", "Båtajävel", "BH45", "1910", "Stockholm", 200);
+		Vehicle v6 = new Vehicle("CGI666", "Husvagn", "Drabant", "PP00", "1999", "Kalmar", 300);
+		Vehicle v7 = new Vehicle("PPP999", "Båttrailer", "Nimbus", "BH45", "1998", "Stockholm", 200);
 		Vehicle v9 = new Vehicle("AAA111", "Husvagn", "Adrian", "XP", "1989", "Lund", 2300);
 		Vehicle v10 = new Vehicle("BBB222", "Släpvagn", "Thule", "KB25", "2005", "Göteborg", 500);
 		Vehicle v11 = new Vehicle("CCC333", "Personbil kombi", "Volvo", "V70", "2009", "Linköping", 1600);
-		Vehicle v12 = new Vehicle("DDD444", "Båttrailer", "ASDF", "APA", "1987", "Lund", 700);
+		Vehicle v12 = new Vehicle("DDD444", "Båttrailer", "Majava", "2000", "1987", "Lund", 700);
 		vr.addVehicle(v1);
 		vr.addVehicle(v2);
 		vr.addVehicle(v3);
@@ -175,8 +175,6 @@ public class Controller {
 
 		Order o1 = new Order(1, getOrderDate(), "140101", c1, v1);
 		or.addOrder(o1);
-		
-
 		Order o2 = new Order(2, getOrderDate(), "140102", c1, v2);
 		or.addOrder(o2);
 		
