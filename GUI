@@ -53,6 +53,41 @@ public class GUI extends JFrame {
 	private JLabel lblDiscount;
 	private JLabel lblCity;
 	private JLabel lblCountry;
+	private JLabel lblCustomerNr;
+	private JLabel lblSearchCustomer;
+	private JLabel lblSelectCustomerNr;
+	private JLabel lblVehicle;
+	private JLabel lblVehicleType_1;
+	private JLabel lblBrand;
+	private JLabel lblRegNr;
+	private JLabel lblSelectedRegnr;
+	private JLabel lblModel;
+	private JLabel lblModelYear;
+	private JLabel lblLocation;
+	private JLabel lblVehiclePrice;
+	private JLabel lblOrderNr;
+	private JLabel lblCustomerNrNewOrder;
+	private JLabel lblRentalDate;
+	private JLabel lblVehicleType;
+	private JLabel lblOrderRegNr;
+	private JLabel lblOrderBrand;
+	private JLabel lblOrderModel;
+	private JLabel lblOrderModelYear;
+	private JLabel lblOrderLocation;
+	private JLabel lblOrderVehiclePrice;
+	private JLabel lblCustomerNrViewOrder;
+	private JLabel lblListprice;
+	private JLabel lblDiscountprice;
+	private JLabel lblOrderDateViewOrder;
+	private JLabel lblCustomerNrTableViewOrder;
+	private JLabel lblOrderNrViewOrder;
+	private JLabel lblRentalDateViewOrder;
+	private JLabel lblVehicleTypeViewOrder;
+	private JLabel lblRegnrvieworder;
+	private JLabel lblBrandvieworder;
+	private JLabel lblModelvieworder;
+	private JLabel lblModelyearvieworder;
+	private JLabel lblLocationvieworder;
 	private JTextField txtOrderNr;
 	private JTextField txtCustomerNr;
 	private JTextField txtRentalDate;
@@ -65,7 +100,6 @@ public class GUI extends JFrame {
 	private JTextField txtLocation;
 	private JTextField txtVehiclePrice;
 	private JLabel lblSearchVehicle;
-	private JButton btnSearchVehicle;
 	private JTextField txtCustomerNrViewOrder;
 	private JTextField txtRegNrViewOrder;
 	private JTextField txtBrandViewOrder;
@@ -75,6 +109,12 @@ public class GUI extends JFrame {
 	private JTextField txtOrderDateViewOrder;
 	private JTextField txtListPrice;
 	private JTextField txtDiscountPrice;
+	
+	final JComboBox<String> customerComboBox = new JComboBox<String>();
+	final JComboBox<String> vehicleComboBox = new JComboBox<String>();
+	final JComboBox<String> vehicleTypesComboBox = new JComboBox<String>();
+	
+	// Skapar tre olika comboboxes som används längre ner.
 
 	public GUI() {
 
@@ -86,9 +126,12 @@ public class GUI extends JFrame {
 		setVisible(true);
 		setResizable(false);
 
+		
+		
+		
 		controller.createTestObjects();
 
-		
+		// Skapar några kunder, ordrar och fordon som kan användas för att leka med.
 		
 		
 		
@@ -104,6 +147,8 @@ public class GUI extends JFrame {
 		JSeparator separator = new JSeparator();
 		separator.setBounds(12, 100, 551, 2);
 		pnlCustomer.add(separator);
+		
+		// Skapar JPanel för kund och skapar fliken Kund.
 
 		txtSearchCustomer = new JTextField();
 		txtSearchCustomer.setBounds(12, 42, 116, 22);
@@ -112,7 +157,9 @@ public class GUI extends JFrame {
 
 		txtCustomerNr = new JTextField();
 		txtCustomerNr.setEditable(false);
+		// Går inte att edita txtCustomerNr.
 		txtCustomerNr.setText(Integer.toString(controller.getCustomerRegistrySize()));
+		// Hämtar storleken på kundregistret och skriver i txtCustomerNr. 
 		txtCustomerNr.setBounds(12, 163, 116, 22);
 		pnlCustomer.add(txtCustomerNr);
 		txtCustomerNr.setColumns(10);
@@ -161,12 +208,14 @@ public class GUI extends JFrame {
 		txtDiscount.setBounds(140, 163, 116, 22);
 		pnlCustomer.add(txtDiscount);
 		txtDiscount.setColumns(10);
+		
+		// Skapar JTextfields.
 
-		JLabel lblSearchCustomer = new JLabel("Sök kundnummer");
+		lblSearchCustomer = new JLabel("Sök kundnummer");
 		lblSearchCustomer.setBounds(12, 13, 116, 16);
 		pnlCustomer.add(lblSearchCustomer);
 
-		JLabel lblCustomerNr = new JLabel("Kundnummer");
+		lblCustomerNr = new JLabel("Kundnummer");
 		lblCustomerNr.setBounds(12, 134, 116, 16);
 		pnlCustomer.add(lblCustomerNr);
 
@@ -206,14 +255,17 @@ public class GUI extends JFrame {
 		lblCountry.setBounds(320, 326, 116, 16);
 		pnlCustomer.add(lblCountry);
 		
-		JLabel lblSelectCustomerNr = new JLabel("Välj kundnummer");
+		lblSelectCustomerNr = new JLabel("Välj kundnummer");
 		lblSelectCustomerNr.setBounds(320, 13, 116, 16);
 		pnlCustomer.add(lblSelectCustomerNr);
 		
-		final JComboBox customerComboBox = new JComboBox(controller.findAllCustomerNumbers());
+		// Skapar JLables.
+		
 		customerComboBox.setBounds(320, 42, 116, 22);
 		pnlCustomer.add(customerComboBox);
+		populateCustomerComboBox();
 		
+		// Lägger till en combobox och använder metoden populateCustomerComboBox för att fylla den med kundnummer.
 		
 		JButton btnSelectedCustomer = new JButton("Visa kund");
 		btnSelectedCustomer.setBounds(449, 41, 115, 25);
@@ -221,7 +273,7 @@ public class GUI extends JFrame {
 		btnSelectedCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				model.Customer tmp = controller.findCustomer(Integer.parseInt(customerComboBox.getSelectedItem().toString()));
-		
+				// Tar valt kundnummer från comboboxen och hämtar kund med findCustomer, lägger kunden i variabeln tmp.
 				if (tmp != null) {
 					txtCustomerNr.setText(Integer.toString(tmp.getCustomerNr()));
 					txtDiscount.setText(tmp.getDiscountPercentage());
@@ -234,9 +286,10 @@ public class GUI extends JFrame {
 					txtCity.setText(tmp.getCity());
 					txtCountry.setText(tmp.getCountry());
 				}
-
+				// Om tmp inte är tom dvs null, hämta kundens alla attribut och skriv ut i JTextFieldsen.
 		else {
 			JOptionPane.showMessageDialog(null, "Angiven kund existerar inte!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+			// Annars visa felmeddelande.
 		}
 	}
 });
@@ -250,11 +303,12 @@ public class GUI extends JFrame {
 				boolean cnumber = true;
 
 				if ((cnumber == intIsNotParseable(txtSearchCustomer.getText())) || (txtSearchCustomer.getText().trim().length() < 1)) {
+					// Om kundnumret inte är parseable ELLER om antalet tecken i txtSearchCustomer är mindre än 1:
 					JOptionPane.showMessageDialog(null,	"Vänligen ange kundnummer (i sifferformat)!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
 				}
-				
 				else {
 					model.Customer tmp = controller.findCustomer(Integer.parseInt(txtSearchCustomer.getText()));
+					// Annars hämta kund med findCustomer och lägg i variabeln tmp.
 					
 					if (tmp != null) {
 						txtCustomerNr.setText(Integer.toString(tmp.getCustomerNr()));
@@ -268,9 +322,12 @@ public class GUI extends JFrame {
 						txtCity.setText(tmp.getCity());
 						txtCountry.setText(tmp.getCountry());
 					}
+					// Om tmp inte är tom dvs null, hämta kundens alla attribut och skriv ut i JTextFieldsen.
+
 
 					else {
 						JOptionPane.showMessageDialog(null, "Angiven kund existerar inte!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+						// Annars visa felmeddelande.
 					}
 				}
 
@@ -286,19 +343,21 @@ public class GUI extends JFrame {
 				txtCustomerNr.setText(Integer.toString(controller.getCustomerRegistrySize()));
 			}
 		});
+		// Rensar kunddetaljer och hämtar storleken på kundregistret och skriver ut i txtCustomerNr.
 
 		JButton btnCreateCustomer = new JButton("Spara kund");
 		btnCreateCustomer.setBounds(12, 418, 176, 25);
 		pnlCustomer.add(btnCreateCustomer);
 		btnCreateCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				
 				boolean cdiscount = true;
 
 				if (cdiscount == doubleIsNotParseable(txtDiscount.getText())) {
-					JOptionPane.showMessageDialog(null,	"Vänligen ange procentrabatt (heltal i sifferformat)!",
-							"Felmeddelande", JOptionPane.ERROR_MESSAGE);
-				} else if (txtCustomerNr.getText().trim().length() > 0
+					// Om procentrabattfältet inte är parseable:
+					JOptionPane.showMessageDialog(null,	"Vänligen ange procentrabatt (heltal i sifferformat)!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+				}
+				else if (txtCustomerNr.getText().trim().length() > 0
 						&& txtFirstName.getText().trim().length() > 0
 						&& txtLastName.getText().trim().length() > 0
 						&& txtStreetAddress.getText().trim().length() > 0
@@ -308,6 +367,7 @@ public class GUI extends JFrame {
 						&& txtPhoneNumber.getText().trim().length() > 0
 						&& txtEmailAddress.getText().trim().length() > 0
 						&& txtDiscount.getText().trim().length() > 0) {
+					// Om alla JTextfieldsen har fler än 0 tecken körs metoden addCustomer och den plockar alla attribut till den nya kunden från JTextFieldsen
 					controller.addCustomer(
 							Integer.parseInt(txtCustomerNr.getText()),
 							txtFirstName.getText(), txtLastName.getText(),
@@ -316,13 +376,18 @@ public class GUI extends JFrame {
 							txtPhoneNumber.getText(),
 							txtEmailAddress.getText(),
 							Double.parseDouble(txtDiscount.getText()));
+					
 					clearCustomer();
 					txtCustomerNr.setText(Integer.toString(controller.getCustomerRegistrySize()));
+					// Rensar kunddetaljer och uppdaterar txtCustomerNr till den nya storleken på kundregistret.
 				}
 
 				else {
 					JOptionPane.showMessageDialog(null, "Vänligen fyll i alla fält!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+					// Om något av JTextFieldsen är tomma kommer felmeddelande.
 				}
+				populateCustomerComboBox();
+				// Kör metoden populateCustomerComboBox för att uppdatera comboboxen med den nya kunden.
 			}
 		});
 
@@ -333,9 +398,10 @@ public class GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				controller.removeCustomer(Integer.parseInt(txtCustomerNr.getText()));
 				clearCustomer();
+				populateCustomerComboBox();
 			}
 		});
-		
+		// Tar bort kunden med metoden removeCustomer, rensar kunddetaljerna med metoden clearCustomer och uppdaterar comboboxen.
 	
 		
 	
@@ -352,30 +418,59 @@ public class GUI extends JFrame {
 	
 		JPanel pnlVehicle = new JPanel();
 		pnlVehicle.setLayout(null);
-		JLabel lblVehicle = new JLabel();
-		lblVehicle.setBounds(220, 5, 136, 16);
-		pnlVehicle.add(lblVehicle);
 		jtp.addTab("Fordon", pnlVehicle);
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBounds(12, 100, 551, 2);
 		pnlVehicle.add(separator_1);
+		
+		// Skapar JPanel för fordon och flik för fordon.
 
+		lblVehicle = new JLabel();
+		lblVehicle.setBounds(220, 5, 136, 16);
+		pnlVehicle.add(lblVehicle);
+		
+		lblVehicleType_1 = new JLabel("Fordonstyp");
+		lblVehicleType_1.setBounds(12, 198, 116, 16);
+		pnlVehicle.add(lblVehicleType_1);
+
+		lblBrand = new JLabel("Märke");
+		lblBrand.setBounds(12, 262, 56, 16);
+		pnlVehicle.add(lblBrand);
+		
+		lblRegNr = new JLabel("Regnummer");
+		lblRegNr.setBounds(12, 134, 116, 16);
+		pnlVehicle.add(lblRegNr);
+		
+		lblSelectedRegnr = new JLabel("Välj regnummer");
+		lblSelectedRegnr.setBounds(321, 13, 116, 16);
+		pnlVehicle.add(lblSelectedRegnr);
+		
+		lblModel = new JLabel("Modell");
+		lblModel.setBounds(140, 262, 56, 16);
+		pnlVehicle.add(lblModel);
+		
+		lblModelYear = new JLabel("Årsmodell");
+		lblModelYear.setBounds(12, 326, 116, 16);
+		pnlVehicle.add(lblModelYear);
+		
+		lblLocation = new JLabel("Plats");
+		lblLocation.setBounds(140, 326, 56, 16);
+		pnlVehicle.add(lblLocation);
+		
+		lblVehiclePrice = new JLabel("Pris");
+		lblVehiclePrice.setBounds(140, 134, 116, 16);
+		pnlVehicle.add(lblVehiclePrice);
+		
 		lblSearchVehicle = new JLabel("Sök regnummer");
 		lblSearchVehicle.setBounds(12, 13, 116, 16);
 		pnlVehicle.add(lblSearchVehicle);
+		
+		// Skapar JLabels.
 
 		txtSearchVehicle = new JTextField();
 		txtSearchVehicle.setBounds(12, 42, 116, 22);
 		pnlVehicle.add(txtSearchVehicle);
 		txtSearchVehicle.setColumns(10);
-
-		JLabel lblRegNr = new JLabel("Regnummer");
-		lblRegNr.setBounds(12, 134, 116, 16);
-		pnlVehicle.add(lblRegNr);
-		
-		JLabel lblSelectedRegnr = new JLabel("Välj regnummer");
-		lblSelectedRegnr.setBounds(321, 13, 116, 16);
-		pnlVehicle.add(lblSelectedRegnr);
 
 		txtRegNr = new JTextField();
 		txtRegNr.setBounds(12, 163, 116, 22);
@@ -387,74 +482,55 @@ public class GUI extends JFrame {
 		pnlVehicle.add(txtVehicleType);
 		txtVehicleType.setColumns(10);
 
-		JLabel lblVehicleType_1 = new JLabel("Fordonstyp");
-		lblVehicleType_1.setBounds(12, 198, 116, 16);
-		pnlVehicle.add(lblVehicleType_1);
-
-		JLabel lblBrand = new JLabel("Märke");
-		lblBrand.setBounds(12, 262, 56, 16);
-		pnlVehicle.add(lblBrand);
-
 		txtBrand = new JTextField();
 		txtBrand.setBounds(12, 291, 116, 22);
 		pnlVehicle.add(txtBrand);
 		txtBrand.setColumns(10);
-
-		JLabel lblModel = new JLabel("Modell");
-		lblModel.setBounds(140, 262, 56, 16);
-		pnlVehicle.add(lblModel);
 
 		txtModel = new JTextField();
 		txtModel.setBounds(140, 291, 116, 22);
 		pnlVehicle.add(txtModel);
 		txtModel.setColumns(10);
 
-		JLabel lblModelYear = new JLabel("Årsmodell");
-		lblModelYear.setBounds(12, 326, 116, 16);
-		pnlVehicle.add(lblModelYear);
-
 		txtModelYear = new JTextField();
 		txtModelYear.setBounds(12, 355, 116, 22);
 		pnlVehicle.add(txtModelYear);
 		txtModelYear.setColumns(10);
-
-		JLabel lblLocation = new JLabel("Plats");
-		lblLocation.setBounds(140, 326, 56, 16);
-		pnlVehicle.add(lblLocation);
 
 		txtLocation = new JTextField();
 		txtLocation.setBounds(140, 355, 116, 22);
 		pnlVehicle.add(txtLocation);
 		txtLocation.setColumns(10);
 
-		JLabel lblVehiclePrice = new JLabel("Pris");
-		lblVehiclePrice.setBounds(140, 134, 116, 16);
-		pnlVehicle.add(lblVehiclePrice);
-
 		txtVehiclePrice = new JTextField();
 		txtVehiclePrice.setBounds(140, 163, 116, 22);
 		pnlVehicle.add(txtVehiclePrice);
 		txtVehiclePrice.setColumns(10);
+		
+		// Skapar JTextFields.
 
-		final JComboBox vehicleComboBox = new JComboBox(controller.findAllRegNumbers());
 		vehicleComboBox.setBounds(321, 42, 116, 22);
 		pnlVehicle.add(vehicleComboBox);
+		populateVehicleComboBox();
+		
+		// Lägger till en combobox och använder metoden populateVehicleComboBox för att fylla den med regnummer.
 		
 		JButton btnSelectedVehicle = new JButton("Visa fordon");
 		btnSelectedVehicle.setBounds(449, 41, 116, 25);
 		pnlVehicle.add(btnSelectedVehicle);
-		
 		btnSelectedVehicle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				model.Vehicle tmp = controller.findVehicle(vehicleComboBox.getSelectedItem().toString());
-				if (tmp != null) {
-					txtRegNr.setText(tmp.getRegNr());
-					txtVehiclePrice.setText(tmp.getVehiclePrice());
-					txtVehicleType.setText(tmp.getVehicleType());
-					txtBrand.setText(tmp.getBrand());
-					txtModel.setText(tmp.getModel());
-					txtModelYear.setText(tmp.getModelYear());
-					txtLocation.setText(tmp.getLocation());
+				model.Vehicle tmpVehicle = controller.findVehicle(vehicleComboBox.getSelectedItem().toString());
+				// Tar regnummer från valt fordon i comboboxen och kör metoden findVehicle för att hämta fordon och lägger fordonet i variabeln tmpVehicle.
+				if (tmpVehicle != null) {
+					txtRegNr.setText(tmpVehicle.getRegNr());
+					txtVehiclePrice.setText(tmpVehicle.getVehiclePrice());
+					txtVehicleType.setText(tmpVehicle.getVehicleType());
+					txtBrand.setText(tmpVehicle.getBrand());
+					txtModel.setText(tmpVehicle.getModel());
+					txtModelYear.setText(tmpVehicle.getModelYear());
+					txtLocation.setText(tmpVehicle.getLocation());
+					// Om tmpVehicle inte är tom, hämta attribut från fordonet och skriv ut i JTextfieldsen.
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Angivet fordon existerar inte!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
@@ -463,21 +539,22 @@ public class GUI extends JFrame {
 		});
 	
 
-		btnSearchVehicle = new JButton("Sök fordon");
+		JButton btnSearchVehicle = new JButton("Sök fordon");
 		btnSearchVehicle.setBounds(140, 41, 116, 25);
 		pnlVehicle.add(btnSearchVehicle);
-		
 		btnSearchVehicle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				model.Vehicle tmp = controller.findVehicle(txtSearchVehicle.getText());
-				if (tmp != null) {
-					txtRegNr.setText(tmp.getRegNr());
-					txtVehiclePrice.setText(tmp.getVehiclePrice());
-					txtVehicleType.setText(tmp.getVehicleType());
-					txtBrand.setText(tmp.getBrand());
-					txtModel.setText(tmp.getModel());
-					txtModelYear.setText(tmp.getModelYear());
-					txtLocation.setText(tmp.getLocation());
+				model.Vehicle tmpVehicle = controller.findVehicle(txtSearchVehicle.getText());
+				// Tar regnummer från JTextFielden och kör metoden findVehicle för att hämta fordon och lägger fordonet i variabeln tmpVehicle.
+				if (tmpVehicle != null) {
+					txtRegNr.setText(tmpVehicle.getRegNr());
+					txtVehiclePrice.setText(tmpVehicle.getVehiclePrice());
+					txtVehicleType.setText(tmpVehicle.getVehicleType());
+					txtBrand.setText(tmpVehicle.getBrand());
+					txtModel.setText(tmpVehicle.getModel());
+					txtModelYear.setText(tmpVehicle.getModelYear());
+					txtLocation.setText(tmpVehicle.getLocation());
+					// Om tmpVehicle inte är tom, hämta attribut från fordonet och skriv ut i JTextfieldsen.
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Angivet fordon existerar inte!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
@@ -495,6 +572,7 @@ public class GUI extends JFrame {
 				
 				if (vprice == intIsNotParseable(txtVehiclePrice.getText())) {
 					JOptionPane.showMessageDialog(null,	"Vänligen ange pris (heltal i sifferformat)!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
+				// Om Stringen i txtVehiclePrice inte går att parsea till int, visa felmeddelande.
 				}
 				else if (txtRegNr.getText().trim().length() > 0
 						&& txtVehicleType.getText().trim().length() > 0
@@ -504,12 +582,17 @@ public class GUI extends JFrame {
 						&& txtVehiclePrice.getText().trim().length() > 0
 						&& txtLocation.getText().trim().length() > 0) {
 					controller.addVehicle(txtRegNr.getText(), txtVehicleType.getText(), txtBrand.getText(), txtModel.getText(), txtModelYear.getText(),	txtLocation.getText(), Double.parseDouble(txtVehiclePrice.getText()));
+					// Om alla JTextFields har mer än 0 tecken, skapar fordon med metoden addVehicle och den plockar alla attribut till det nya fordonet från JTextFieldsen.
 					clearVehicle();
+					// Rensar fordonsdetaljer med metoden clearVehicle.
 				}
 
 				else {
 					JOptionPane.showMessageDialog(null,	"Vänligen fyll i alla fält!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
 				}
+				populateVehicleComboBox();
+				populateVehicleTypesComboBox();
+				// Uppdaterar comboboxarna med det nyskapade fordonet.
 			}
 		});
 
@@ -519,6 +602,7 @@ public class GUI extends JFrame {
 		btnClearVehicle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearVehicle();
+				// Rensar fordonsdetaljer.
 			}
 		});
 
@@ -528,7 +612,11 @@ public class GUI extends JFrame {
 		btnRemoveVehicle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controller.removeVehicle(txtRegNr.getText());
+				// Kör metoden removeVehicle och tar bort fordonet från fordonsregistret.
 				clearVehicle();
+				populateVehicleComboBox();
+				populateVehicleTypesComboBox();
+				// Rensar fordonsdetaljer och uppdaterar comboboxarna.
 			}
 		});
 
@@ -546,13 +634,55 @@ public class GUI extends JFrame {
 		
 		// Lägg order
 
+		
+		
 		JPanel pnlOrder = new JPanel();
 		pnlOrder.setLayout(null);
 		jtp.addTab("Lägg order", pnlOrder);
+		
+		// Skapar JPanel och flik för Lägg Order.
 
-		JLabel lblOrderNr = new JLabel("Ordernummer");
+		lblOrderNr = new JLabel("Ordernummer");
 		lblOrderNr.setBounds(12, 13, 116, 16);
 		pnlOrder.add(lblOrderNr);
+		
+		lblCustomerNrNewOrder = new JLabel("Kundnummer");
+		lblCustomerNrNewOrder.setBounds(12, 392, 116, 16);
+		pnlOrder.add(lblCustomerNrNewOrder);
+
+		lblRentalDate = new JLabel("Datum (ÅÅMMDD)");
+		lblRentalDate.setBounds(140, 13, 116, 16);
+		pnlOrder.add(lblRentalDate);
+
+		lblVehicleType = new JLabel("Fordonstyp");
+		lblVehicleType.setBounds(268, 13, 169, 16);
+		pnlOrder.add(lblVehicleType);
+
+		lblOrderRegNr = new JLabel("Regnr");
+		lblOrderRegNr.setBounds(12, 130, 56, 16);
+		pnlOrder.add(lblOrderRegNr);
+
+		lblOrderBrand = new JLabel("Märke");
+		lblOrderBrand.setBounds(104, 130, 56, 16);
+		pnlOrder.add(lblOrderBrand);
+
+		lblOrderModel = new JLabel("Modell");
+		lblOrderModel.setBounds(196, 130, 56, 16);
+		pnlOrder.add(lblOrderModel);
+
+		lblOrderModelYear = new JLabel("Årsmodell");
+		lblOrderModelYear.setBounds(288, 130, 80, 16);
+		pnlOrder.add(lblOrderModelYear);
+
+		lblOrderLocation = new JLabel("Plats");
+		lblOrderLocation.setBounds(380, 130, 56, 16);
+		pnlOrder.add(lblOrderLocation);
+
+		lblOrderVehiclePrice = new JLabel("Pris");
+		lblOrderVehiclePrice.setBounds(472, 130, 56, 16);
+		pnlOrder.add(lblOrderVehiclePrice);
+		
+		// JLabels
 
 		txtOrderNr = new JTextField();
 		txtOrderNr.setBounds(12, 42, 116, 22);
@@ -570,49 +700,23 @@ public class GUI extends JFrame {
 		txtRentalDate.setBounds(140, 42, 116, 22);
 		pnlOrder.add(txtRentalDate);
 		txtRentalDate.setColumns(10);
-
 		
-		final JComboBox comboBox = new JComboBox(controller.findAllVehicleTypes());
-		comboBox.setBounds(268, 42, 169, 22);
-		pnlOrder.add(comboBox);
+		// JTextfields
 
-		JLabel lblCustomerNrNewOrder = new JLabel("Kundnummer");
-		lblCustomerNrNewOrder.setBounds(12, 392, 116, 16);
-		pnlOrder.add(lblCustomerNrNewOrder);
+		vehicleTypesComboBox.setBounds(268, 42, 169, 22);
+		pnlOrder.add(vehicleTypesComboBox);
+		populateVehicleTypesComboBox();
+		
+		// Lägger till en combobox och använder metoden populateVehicleTypesComboBox för att fylla den med fordonstyper.
 
-		JLabel lblRentalDate = new JLabel("Datum (ÅÅMMDD)");
-		lblRentalDate.setBounds(140, 13, 116, 16);
-		pnlOrder.add(lblRentalDate);
-
-		JLabel lblVehicleType = new JLabel("Fordonstyp");
-		lblVehicleType.setBounds(268, 13, 169, 16);
-		pnlOrder.add(lblVehicleType);
-
-		JLabel lblOrderRegNr = new JLabel("Regnr");
-		lblOrderRegNr.setBounds(12, 130, 56, 16);
-		pnlOrder.add(lblOrderRegNr);
-
-		JLabel lblOrderBrand = new JLabel("Märke");
-		lblOrderBrand.setBounds(104, 130, 56, 16);
-		pnlOrder.add(lblOrderBrand);
-
-		JLabel lblOrderModel = new JLabel("Modell");
-		lblOrderModel.setBounds(196, 130, 56, 16);
-		pnlOrder.add(lblOrderModel);
-
-		JLabel lblOrderModelYear = new JLabel("Årsmodell");
-		lblOrderModelYear.setBounds(288, 130, 80, 16);
-		pnlOrder.add(lblOrderModelYear);
-
-		JLabel lblOrderLocation = new JLabel("Plats");
-		lblOrderLocation.setBounds(380, 130, 56, 16);
-		pnlOrder.add(lblOrderLocation);
-
-		JLabel lblOrderVehiclePrice = new JLabel("Pris");
-		lblOrderVehiclePrice.setBounds(472, 130, 56, 16);
-		pnlOrder.add(lblOrderVehiclePrice);
-
-		final DefaultTableModel model = new DefaultTableModel();
+		final DefaultTableModel model = new DefaultTableModel(){
+			public boolean isCellEditable(int row, int column){
+				return false;
+			}
+		};
+		
+		// Skapar en DefaultTableModel (model) och genom metoden isCellEditable bestämmer vi att man inte kan redigera innehållet i modellen.
+		
 		final JTable table = new JTable(16, 6);
 		table.setBounds(12, 159, 553, 220);
 		model.setColumnIdentifiers(new String[] { "", "", "", "", "", "" });
@@ -652,7 +756,7 @@ public class GUI extends JFrame {
 		btnAvailableVehicles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				model.setRowCount(0);
-				String selected = comboBox.getSelectedItem().toString();
+				String selected = vehicleTypesComboBox.getSelectedItem().toString();
 				ArrayList<Vehicle> tmplist = controller.findAvailableTypesAtDate(selected, txtRentalDate.getText());
 				for (Vehicle tmp : tmplist) {
 					model.addRow(new String[] { tmp.getRegNr(), tmp.getBrand(),	tmp.getModel(), tmp.getModelYear(),	tmp.getLocation(), (tmp.getVehiclePrice()) });
@@ -708,19 +812,72 @@ public class GUI extends JFrame {
 		
 		
 		
-		
 		// Visa order
 
+		
+		
 		JPanel pnlViewOrder = new JPanel();
 		pnlViewOrder.setLayout(null);
 		JLabel lblViewOrder = new JLabel();
 		lblViewOrder.setBounds(220, 5, 136, 16);
 		pnlViewOrder.add(lblViewOrder);
 		jtp.addTab("Visa order", pnlViewOrder);
+		
+		// Skapar JPanel och fliken för Visa Order
 
-		JLabel lblCustomerNrViewOrder = new JLabel("Kundnummer");
+		lblCustomerNrViewOrder = new JLabel("Kundnummer");
 		lblCustomerNrViewOrder.setBounds(12, 13, 116, 16);
 		pnlViewOrder.add(lblCustomerNrViewOrder);
+		
+		lblListprice = new JLabel("Listpris");
+		lblListprice.setBounds(321, 347, 116, 16);
+		pnlViewOrder.add(lblListprice);
+
+		lblDiscountprice = new JLabel("Kundens pris");
+		lblDiscountprice.setBounds(449, 347, 116, 16);
+		pnlViewOrder.add(lblDiscountprice);
+
+		lblOrderDateViewOrder = new JLabel("Orderdatum");
+		lblOrderDateViewOrder.setBounds(321, 283, 116, 16);
+		pnlViewOrder.add(lblOrderDateViewOrder);
+
+		lblCustomerNrTableViewOrder = new JLabel("Kundnr");
+		lblCustomerNrTableViewOrder.setBounds(12, 91, 58, 16);
+		pnlViewOrder.add(lblCustomerNrTableViewOrder);
+
+		lblOrderNrViewOrder = new JLabel("Ordernr");
+		lblOrderNrViewOrder.setBounds(86, 91, 58, 16);
+		pnlViewOrder.add(lblOrderNrViewOrder);
+
+		lblRentalDateViewOrder = new JLabel("Hyrdatum");
+		lblRentalDateViewOrder.setBounds(160, 91, 67, 16);
+		pnlViewOrder.add(lblRentalDateViewOrder);
+
+		lblVehicleTypeViewOrder = new JLabel("Fordonstyp");
+		lblVehicleTypeViewOrder.setBounds(235, 91, 67, 16);
+		pnlViewOrder.add(lblVehicleTypeViewOrder);
+
+		lblRegnrvieworder = new JLabel("Regnummer");
+		lblRegnrvieworder.setBounds(321, 91, 116, 16);
+		pnlViewOrder.add(lblRegnrvieworder);
+
+		lblBrandvieworder = new JLabel("Märke");
+		lblBrandvieworder.setBounds(449, 91, 116, 16);
+		pnlViewOrder.add(lblBrandvieworder);
+
+		lblModelvieworder = new JLabel("Modell");
+		lblModelvieworder.setBounds(321, 155, 116, 16);
+		pnlViewOrder.add(lblModelvieworder);
+
+		lblModelyearvieworder = new JLabel("Årsmodell");
+		lblModelyearvieworder.setBounds(449, 155, 116, 16);
+		pnlViewOrder.add(lblModelyearvieworder);
+
+		lblLocationvieworder = new JLabel("Plats");
+		lblLocationvieworder.setBounds(321, 219, 116, 16);
+		pnlViewOrder.add(lblLocationvieworder);
+
+		// JLabels
 
 		txtCustomerNrViewOrder = new JTextField();
 		txtCustomerNrViewOrder.setBounds(12, 42, 116, 22);
@@ -774,56 +931,16 @@ public class GUI extends JFrame {
 		txtDiscountPrice.setEditable(false);
 		pnlViewOrder.add(txtDiscountPrice);
 		txtDiscountPrice.setColumns(10);
-
-		JLabel lblListprice = new JLabel("Listpris");
-		lblListprice.setBounds(321, 347, 116, 16);
-		pnlViewOrder.add(lblListprice);
-
-		JLabel lblDiscountprice = new JLabel("Kundens pris");
-		lblDiscountprice.setBounds(449, 347, 116, 16);
-		pnlViewOrder.add(lblDiscountprice);
-
-		JLabel lblOrderDateViewOrder = new JLabel("Orderdatum");
-		lblOrderDateViewOrder.setBounds(321, 283, 116, 16);
-		pnlViewOrder.add(lblOrderDateViewOrder);
-
-		JLabel lblCustomerNrTableViewOrder = new JLabel("Kundnr");
-		lblCustomerNrTableViewOrder.setBounds(12, 91, 58, 16);
-		pnlViewOrder.add(lblCustomerNrTableViewOrder);
-
-		JLabel lblOrderNrViewOrder = new JLabel("Ordernr");
-		lblOrderNrViewOrder.setBounds(86, 91, 58, 16);
-		pnlViewOrder.add(lblOrderNrViewOrder);
-
-		JLabel lblRentalDateViewOrder = new JLabel("Hyrdatum");
-		lblRentalDateViewOrder.setBounds(160, 91, 67, 16);
-		pnlViewOrder.add(lblRentalDateViewOrder);
-
-		JLabel lblVehicleTypeViewOrder = new JLabel("Fordonstyp");
-		lblVehicleTypeViewOrder.setBounds(235, 91, 67, 16);
-		pnlViewOrder.add(lblVehicleTypeViewOrder);
-
-		JLabel lblRegnrvieworder = new JLabel("Regnummer");
-		lblRegnrvieworder.setBounds(321, 91, 116, 16);
-		pnlViewOrder.add(lblRegnrvieworder);
-
-		JLabel lblBrandvieworder = new JLabel("Märke");
-		lblBrandvieworder.setBounds(449, 91, 116, 16);
-		pnlViewOrder.add(lblBrandvieworder);
-
-		JLabel lblModelvieworder = new JLabel("Modell");
-		lblModelvieworder.setBounds(321, 155, 116, 16);
-		pnlViewOrder.add(lblModelvieworder);
-
-		JLabel lblModelyearvieworder = new JLabel("Årsmodell");
-		lblModelyearvieworder.setBounds(449, 155, 116, 16);
-		pnlViewOrder.add(lblModelyearvieworder);
-
-		JLabel lblLocationvieworder = new JLabel("Plats");
-		lblLocationvieworder.setBounds(321, 219, 116, 16);
-		pnlViewOrder.add(lblLocationvieworder);
-
-		final DefaultTableModel model2 = new DefaultTableModel();
+		
+		//JTextfields
+		
+		final DefaultTableModel model2 = new DefaultTableModel(){
+			public boolean isCellEditable(int row, int column){
+				return false;
+			}
+		};
+		// Skapar en DefaultTableModel (model2) och genom metoden isCellEditable bestämmer vi att man inte kan redigera innehållet i modellen.
+		
 		final JTable table2 = new JTable(10, 3);
 		table2.setBounds(12, 120, 297, 278);
 		model2.setColumnIdentifiers(new String[] { "", "", "", "", });
@@ -833,6 +950,8 @@ public class GUI extends JFrame {
 		table2.setColumnSelectionAllowed(false);
 		table2.setRowSelectionAllowed(true);
 		pnlViewOrder.add(table2);
+		
+		//Skapar en JTable med 4 kolumner. Endast val av rows är enabled och endast en row kan väljas åt gången.
 
 		JButton btnSearchCustomerViewOrder = new JButton("Visa ordrar");
 		btnSearchCustomerViewOrder.setBounds(140, 41, 116, 25);
@@ -841,28 +960,32 @@ public class GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				model2.setRowCount(0);
 				clearViewOrder();
-				
 				boolean cnumber = true;
 				
 				if ((cnumber == intIsNotParseable(txtCustomerNrViewOrder.getText())) || (txtCustomerNrViewOrder.getText().trim().length() < 1)) {
+					//Om texten i txtCustomerNrViewOrder inte går att parsea till int ELLER om texten är mindre än 1 tecken:
 					JOptionPane.showMessageDialog(null,	"Vänligen ange kundnummer (i sifferformat)!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
 				}
 				else {
 					int selectedCustomer = Integer.parseInt(txtCustomerNrViewOrder.getText());
 					Customer tmpcust = controller.findCustomer(selectedCustomer);
-
+					//Annars använd kundnumret från txtCustomerNrViewOrder i metoden findCustomer och hämta den valda kunden, som läggs i variablen tmpcust. 
 					if (tmpcust == null) {
-						JOptionPane.showMessageDialog(null,	"Angiven kund existerar inte!", "Felmeddelande",	JOptionPane.ERROR_MESSAGE);
+						//Om variablen tmpcust är lika med null, dvs den är tom:
+						JOptionPane.showMessageDialog(null,	"Angiven kund existerar inte!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
 						ArrayList<Order> tmporderlist = controller.findCustomer(selectedCustomer).getPreviousOrders();
+						//Annars hämta den valda kundens previousOrders och lägg dom i ArrayListen tmporderlist. 
 						if (tmporderlist.isEmpty()) {
+							//Om tmporderlist är tom, dvs kunden har inga tidigare ordrar:
 							JOptionPane.showMessageDialog(null,	"Kunden har ingen orderhistorik!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
 						}
 						else {
 							for (Order tmporder : tmporderlist) {
 								model2.addRow(new String[] {
 										Integer.toString(tmporder.getCustomer().getCustomerNr()), Integer.toString(tmporder.getOrderNr()), tmporder.getRentalDate(), tmporder.getVehicle().getVehicleType() });
+								//Annars forloopa igenom tmporderlist och skriv ut ordrarna och dess attribut i model2 med den inbyggda metoden addRow.
 							}
 						}
 					}
@@ -879,6 +1002,8 @@ public class GUI extends JFrame {
 		btnRemoveOrder.setBounds(200, 418, 176, 25);
 		btnRemoveOrder.setEnabled(false);
 		pnlViewOrder.add(btnRemoveOrder);
+		
+		// Skapar knapparna btnOrderDetails och btnRemoveOrder som båda två är disabled by default.
 
 		ListSelectionModel listSelectionModel2 = table2.getSelectionModel();
 		listSelectionModel2.addListSelectionListener(new ListSelectionListener() {
@@ -888,33 +1013,39 @@ public class GUI extends JFrame {
 						btnRemoveOrder.setEnabled(!lsm.isSelectionEmpty());
 					}
 				});
+		// Enablear knapparna om användaren selectar någon rad i tabellen.
 
 		btnOrderDetails.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int tmpOrder = Integer.parseInt(table2.getValueAt(table2.getSelectedRow(), 1).toString());
-				
-				txtRegNrViewOrder.setText(controller.getOrder(tmpOrder).getVehicle().getRegNr());
-				txtBrandViewOrder.setText(controller.getOrder(tmpOrder).getVehicle().getBrand());
-				txtModelViewOrder.setText(controller.getOrder(tmpOrder).getVehicle().getModel());
-				txtModelYearViewOrder.setText(controller.getOrder(tmpOrder).getVehicle().getModelYear());
-				txtLocationViewOrder.setText(controller.getOrder(tmpOrder).getVehicle().getLocation());
-				txtOrderDateViewOrder.setText(controller.getOrder(tmpOrder).getOrderDate());
-				txtListPrice.setText(controller.getOrder(tmpOrder).getVehicle().getVehiclePrice());
-				txtDiscountPrice.setText(Double.toString(controller.getOrder(tmpOrder).getOrderPrice()));
+				int selectedOrderNr = Integer.parseInt(table2.getValueAt(table2.getSelectedRow(), 1).toString());
+				// Hämtar värdet från kolumn 2 på den rad som är selected och lägger det i variablen selectedOrderNr.
+				txtRegNrViewOrder.setText(controller.getOrder(selectedOrderNr).getVehicle().getRegNr());
+				txtBrandViewOrder.setText(controller.getOrder(selectedOrderNr).getVehicle().getBrand());
+				txtModelViewOrder.setText(controller.getOrder(selectedOrderNr).getVehicle().getModel());
+				txtModelYearViewOrder.setText(controller.getOrder(selectedOrderNr).getVehicle().getModelYear());
+				txtLocationViewOrder.setText(controller.getOrder(selectedOrderNr).getVehicle().getLocation());
+				txtOrderDateViewOrder.setText(controller.getOrder(selectedOrderNr).getOrderDate());
+				txtListPrice.setText(controller.getOrder(selectedOrderNr).getVehicle().getVehiclePrice());
+				txtDiscountPrice.setText(Double.toString(controller.getOrder(selectedOrderNr).getOrderPrice()));
+				//Använder selectedOrderNr för att hämta order -> hämta fordon -> hämta fordonets attribut, och sedan skriva ut dom i textfälten.
 			}
 		});
 
 		btnRemoveOrder.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Customer selectedCustomer = controller.findCustomer(Integer.parseInt(txtCustomerNrViewOrder.getText()));
+				// Tar kundnumret från txtCustomerNrViewOrder och hämtar kund med metoden findCustomer. Lägger kunden i variablen selectedCustomer.
 				controller.removeOrder(controller.getOrder(Integer.parseInt(table2.getValueAt(table2.getSelectedRow(), 1).toString())), selectedCustomer, table2.getValueAt(table2.getSelectedRow(), 2).toString());
+				// Använder metoden removeOrder(Order, Customer, rentalDate) och raderar ordern.
 				model2.setRowCount(0);
 				clearViewOrder();
-				
+				// Tömmer tabellen och rensar orderdetaljer.
 				ArrayList<Order> tmporderlist = controller.findCustomer(selectedCustomer.getCustomerNr()).getPreviousOrders();
+				// Hämtar valda kundens resterande previousOrders och lägger dom i ArrayListen tmporderlist.
 				for (Order tmporder : tmporderlist) {
 					model2.addRow(new String[] {
 							Integer.toString(tmporder.getCustomer().getCustomerNr()), Integer.toString(tmporder.getOrderNr()), tmporder.getRentalDate(), tmporder.getVehicle().getVehicleType() });
+					// Forloopar igenom tmporderlist och skriver ut kundens resterande previousOrders i tabellen.
 				}
 			}
 		});
@@ -927,18 +1058,36 @@ public class GUI extends JFrame {
 				model2.setRowCount(0);
 				clearViewOrder();
 				txtCustomerNrViewOrder.setText("");
-			
 			}
 		});
-
 	}
+	// Tömmer tabellen, rensar orderdetaljer och rensar txtCustomerNrViewOrder.
+	
+	public void populateCustomerComboBox(){
+		customerComboBox.removeAllItems();
+			for (String cNr : controller.findAllCustomerNumbers()){
+				customerComboBox.addItem(cNr);
+			}
+	}
+	// Metod för att först tömma comboboxen, sen forloopa igenom ArrayListen av kundnummer som metoden findAllCustomerNumbers returnerar, sen fylla Comboboxen med kundnummer.
+	
+	public void populateVehicleComboBox(){
+		vehicleComboBox.removeAllItems();
+			for (String regNr : controller.findAllRegNumbers()){
+				vehicleComboBox.addItem(regNr);
+			}
+	}
+	// Metod för att först tömma comboboxen, sen forloopa igenom ArrayListen av regnummer som metoden findAllRegNumbers returnerar, sen fylla Comboboxen med regnummer.
+	
+	public void populateVehicleTypesComboBox(){
+		vehicleTypesComboBox.removeAllItems();
+			for (String vType : controller.findAllVehicleTypes()){
+				vehicleTypesComboBox.addItem(vType);
+			}
+	}
+	// Metod för att först tömma comboboxen, sen forloopa igenom ArrayListen av fordonstyper som metoden findAllVehicleTypes returnerar, sen fylla Comboboxen med fordonstyper.
 		
-		
-		
-		
-		
-		
-		
+
 
 
 	public void clearCustomer() {
@@ -986,26 +1135,29 @@ public class GUI extends JFrame {
 		txtRentalDate.setText("");
 		txtVehicleType.setText("");
 	}
+	
+	// Olika metoder för att rensa textfält.
 
+	
+	
 	public boolean intIsNotParseable(String string) {
 		try {
 			Integer.valueOf(string);
 			return false;
-			
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 			return true;
-			
 		}
 	}
-
+	
 	public boolean doubleIsNotParseable(String string) {
 		try {
 			Double.valueOf(string);
 			return false;
-			
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 			return true;
-			
 		}
 	}
+	// Metoder för att kontrollera om en String går att omvandla till int eller double.
 }
