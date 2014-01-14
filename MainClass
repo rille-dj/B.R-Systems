@@ -1,10 +1,58 @@
 package main.method;
 
+import java.util.*;
 import viewer.GUI;
+import controller.Controller;
+import model.Customer;
+import model.CustomerRegistry;
+import model.Vehicle;
+import model.VehicleRegistry;
+import model.Order;
+import model.OrderRegistry;
 
 public class MainClass {
 	public static void main(String[] args) {
+		
 		GUI tp = new GUI();
-
+		
+		/*
+		Controller controller = new Controller();
+		Scanner scanner = new Scanner(System.in);
+		controller.addCustomer(1, "Julia", "Berglund", "Tunavägen 39", "22363", "Lund", "Sverige", "0700001231", "julia@berglund.se", 20);
+		controller.addCustomer(2, "Richard", "Johansson", "Magistratsvägen 57", "22644", "Lund", "Sverige", "0730603265", "richard@johansson.se", 10);
+		controller.addCustomer(3, "Erika", "Strömberg", "Tunavägen 39", "22363", "Lund", "Sverige", "0762117252", "erika.stromberg@gmail.com", 10);
+		controller.addVehicle("AAA000", "SUV", "Porsche", "Cayenne", "2009", "Lund", 1650);
+		controller.addVehicle("BBB111", "SUV", "Volvo", "XC60", "2011", "Göteborg", 1200);
+		controller.addVehicle("CCC333", "SUV", "Ferrari", "Dolomite", "2014", "Stockholm", 2800);		
+		controller.addVehicle("DDD333", "Personbil", "Saab", "9-3", "2004", "Lund", 750);
+		controller.createOrder(1, controller.getOrderDate(), "140201", controller.findCustomer(1), controller.findVehicle("AAA000"));
+		controller.createOrder(2, controller.getOrderDate(), "140201", controller.findCustomer(1), controller.findVehicle("BBB111"));
+		controller.createOrder(3, controller.getOrderDate(), "140120", controller.findCustomer(3), controller.findVehicle("CCC333"));
+		*/
+		
+		/*
+		System.out.println("Kontroll av fordonstillgänglighet. Mata in fordonstyp: ");
+		String vType = scanner.nextLine();
+		System.out.println("Kontroll av fordonstillgänglighet. Mata in hyrdatum: ");
+		String date = scanner.nextLine();
+		System.out.println("Följande fordon är tillgängliga:");
+		for (Vehicle v : controller.findAvailableTypesAtDate(vType, date)){
+				System.out.println("Regnr: " + v.getRegNr() + ", Fordonstyp: " + v.getVehicleType() + ", Fordon: " + v.getBrand() + " " + v.getModel() + ", Plats: " + v.getLocation() + ", Fordonspris: " + v.getVehiclePrice() + ":-");	
+		}
+		*/
+		
+		/*
+		System.out.println("Visa en kunds alla bokningar. Mata in kundnummer:");
+		int cNr = scanner.nextInt();
+		System.out.println("Kund " + cNr + " har " + controller.findCustomer(cNr).getDiscountPercentage() + "% rabatt och har följande orderhistorik:");
+		System.out.println("");
+		for (Order o : controller.findCustomer(cNr).getPreviousOrders()){
+			System.out.println("Ordernr: " + o.getOrderNr() + ", Hyrdatum: " + o.getRentalDate() + ", Bokningsdatum: " + o.getOrderDate() + ", Bokningspris: " + o.getOrderPrice() + ":-");
+			System.out.println("Regnr: " + o.getVehicle().getRegNr() + ", Fordonstyp: " + o.getVehicle().getVehicleType() + ", Fordon: " + o.getVehicle().getBrand() + " " + o.getVehicle().getModel() + ", Fordonspris: " + o.getVehicle().getVehiclePrice() + ":-");
+			System.out.println("");
+		}
+		*/
+		
+		
 	}
 }
