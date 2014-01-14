@@ -272,7 +272,7 @@ public class GUI extends JFrame {
 		pnlCustomer.add(btnSelectedCustomer);
 		btnSelectedCustomer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				model.Customer tmp = controller.findCustomer(Integer.parseInt(customerComboBox.getSelectedItem().toString()));
+				model.Customer tmp = controller.getCustomer(Integer.parseInt(customerComboBox.getSelectedItem().toString()));
 				// Tar valt kundnummer från comboboxen och hämtar kund med findCustomer, lägger kunden i variabeln tmp.
 				if (tmp != null) {
 					txtCustomerNr.setText(Integer.toString(tmp.getCustomerNr()));
@@ -307,7 +307,7 @@ public class GUI extends JFrame {
 					JOptionPane.showMessageDialog(null,	"Vänligen ange kundnummer (i sifferformat)!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
 				}
 				else {
-					model.Customer tmp = controller.findCustomer(Integer.parseInt(txtSearchCustomer.getText()));
+					model.Customer tmp = controller.getCustomer(Integer.parseInt(txtSearchCustomer.getText()));
 					// Annars hämta kund med findCustomer och lägg i variabeln tmp.
 					
 					if (tmp != null) {
@@ -368,7 +368,7 @@ public class GUI extends JFrame {
 						&& txtEmailAddress.getText().trim().length() > 0
 						&& txtDiscount.getText().trim().length() > 0) {
 					// Om alla JTextfieldsen har fler än 0 tecken körs metoden createCustomer och den plockar alla attribut till den nya kunden från JTextFieldsen
-					ArrayList<Order> tmpList = controller.findCustomer(Integer.parseInt(txtCustomerNr.getText())).getPreviousOrders();
+					ArrayList<Order> tmpList = controller.getCustomer(Integer.parseInt(txtCustomerNr.getText())).getPreviousOrders();
 					controller.createCustomer(
 							Integer.parseInt(txtCustomerNr.getText()),
 							txtFirstName.getText(), txtLastName.getText(),
@@ -378,7 +378,7 @@ public class GUI extends JFrame {
 							txtEmailAddress.getText(),
 							Double.parseDouble(txtDiscount.getText()));
 					
-					controller.findCustomer(Integer.parseInt(txtCustomerNr.getText())).getPreviousOrders().addAll(tmpList);
+					controller.getCustomer(Integer.parseInt(txtCustomerNr.getText())).getPreviousOrders().addAll(tmpList);
 					tmpList.clear();
 					clearCustomer();
 					txtCustomerNr.setText(Integer.toString(controller.getCustomerRegistrySize()));
@@ -523,7 +523,7 @@ public class GUI extends JFrame {
 		pnlVehicle.add(btnSelectedVehicle);
 		btnSelectedVehicle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				model.Vehicle tmpVehicle = controller.findVehicle(vehicleComboBox.getSelectedItem().toString());
+				model.Vehicle tmpVehicle = controller.getVehicle(vehicleComboBox.getSelectedItem().toString());
 				// Tar regnummer från valt fordon i comboboxen och kör metoden findVehicle för att hämta fordon och lägger fordonet i variabeln tmpVehicle.
 				if (tmpVehicle != null) {
 					txtRegNr.setText(tmpVehicle.getRegNr());
@@ -547,7 +547,7 @@ public class GUI extends JFrame {
 		pnlVehicle.add(btnSearchVehicle);
 		btnSearchVehicle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				model.Vehicle tmpVehicle = controller.findVehicle(txtSearchVehicle.getText());
+				model.Vehicle tmpVehicle = controller.getVehicle(txtSearchVehicle.getText());
 				// Tar regnummer från JTextFielden och kör metoden findVehicle för att hämta fordon och lägger fordonet i variabeln tmpVehicle.
 				if (tmpVehicle != null) {
 					txtRegNr.setText(tmpVehicle.getRegNr());
@@ -690,7 +690,7 @@ public class GUI extends JFrame {
 		txtOrderNr = new JTextField();
 		txtOrderNr.setBounds(12, 42, 116, 22);
 		txtOrderNr.setEditable(false);
-		txtOrderNr.setText(Integer.toString(controller.getOrderRegistrySize()));
+		txtOrderNr.setText(Integer.toString(controller.getAllOrdersSize()));
 		pnlOrder.add(txtOrderNr);
 		txtOrderNr.setColumns(10);
 
@@ -760,7 +760,7 @@ public class GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				model.setRowCount(0);
 				String selected = vehicleTypesComboBox.getSelectedItem().toString();
-				ArrayList<Vehicle> tmplist = controller.findAvailableTypesAtDate(selected, txtRentalDate.getText());
+				ArrayList<Vehicle> tmplist = controller.getAvailableTypesAtDate(selected, txtRentalDate.getText());
 				for (Vehicle tmp : tmplist) {
 					model.addRow(new String[] { tmp.getRegNr(), tmp.getBrand(),	tmp.getModel(), tmp.getModelYear(),	tmp.getLocation(), (tmp.getVehiclePrice()) });
 				}
@@ -791,12 +791,12 @@ public class GUI extends JFrame {
 					JOptionPane.showMessageDialog(null,	"Vänligen ange kundnummer (i sifferformat)!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
 				}
 				else {
-					Customer tmpcust = controller.findCustomer(Integer.parseInt(txtCustomerNrNewOrder.getText()));
+					Customer tmpcust = controller.getCustomer(Integer.parseInt(txtCustomerNrNewOrder.getText()));
 					if (tmpcust != null) {
-						controller.createOrder(Integer.parseInt(txtOrderNr.getText()), controller.getOrderDate(), txtRentalDate.getText(), controller.findCustomer(Integer.parseInt(txtCustomerNrNewOrder.getText())), controller.findVehicle(table.getValueAt(table.getSelectedRow(), 0).toString()));
+						controller.createOrder(Integer.parseInt(txtOrderNr.getText()), controller.getOrderDateTimeStamp(), txtRentalDate.getText(), controller.getCustomer(Integer.parseInt(txtCustomerNrNewOrder.getText())), controller.getVehicle(table.getValueAt(table.getSelectedRow(), 0).toString()));
 						model.setRowCount(0);
 						clearCreateOrder();
-						txtOrderNr.setText(Integer.toString(controller.getOrderRegistrySize()));
+						txtOrderNr.setText(Integer.toString(controller.getAllOrdersSize()));
 					}
 					else {
 						JOptionPane.showMessageDialog(null,	"Angiven kund existerar inte!", "Felmeddelande",	JOptionPane.ERROR_MESSAGE);
@@ -971,14 +971,14 @@ public class GUI extends JFrame {
 				}
 				else {
 					int selectedCustomer = Integer.parseInt(txtCustomerNrViewOrder.getText());
-					Customer tmpcust = controller.findCustomer(selectedCustomer);
+					Customer tmpcust = controller.getCustomer(selectedCustomer);
 					//Annars använd kundnumret från txtCustomerNrViewOrder i metoden findCustomer och hämta den valda kunden, som läggs i variablen tmpcust. 
 					if (tmpcust == null) {
 						//Om variablen tmpcust är lika med null, dvs den är tom:
 						JOptionPane.showMessageDialog(null,	"Angiven kund existerar inte!", "Felmeddelande", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
-						ArrayList<Order> tmporderlist = controller.findCustomer(selectedCustomer).getPreviousOrders();
+						ArrayList<Order> tmporderlist = controller.getCustomer(selectedCustomer).getPreviousOrders();
 						//Annars hämta den valda kundens previousOrders och lägg dom i ArrayListen tmporderlist. 
 						if (tmporderlist.isEmpty()) {
 							//Om tmporderlist är tom, dvs kunden har inga tidigare ordrar:
@@ -1043,7 +1043,7 @@ public class GUI extends JFrame {
 				model2.setRowCount(0);
 				clearViewOrder();
 				// Tömmer tabellen och rensar orderdetaljer.
-				ArrayList<Order> tmporderlist = controller.findCustomer(selectedCustomerNr).getPreviousOrders();
+				ArrayList<Order> tmporderlist = controller.getCustomer(selectedCustomerNr).getPreviousOrders();
 				// Hämtar valda kundens resterande previousOrders och lägger dom i ArrayListen tmporderlist.
 				for (Order tmporder : tmporderlist) {
 					model2.addRow(new String[] {
@@ -1068,7 +1068,7 @@ public class GUI extends JFrame {
 	
 	public void populateCustomerComboBox(){
 		customerComboBox.removeAllItems();
-			for (String cNr : controller.findAllCustomerNumbers()){
+			for (String cNr : controller.getAllCustomerNumbers()){
 				customerComboBox.addItem(cNr);
 			}
 	}
@@ -1076,7 +1076,7 @@ public class GUI extends JFrame {
 	
 	public void populateVehicleComboBox(){
 		vehicleComboBox.removeAllItems();
-			for (String regNr : controller.findAllRegNumbers()){
+			for (String regNr : controller.getAllRegNumbers()){
 				vehicleComboBox.addItem(regNr);
 			}
 	}
@@ -1084,7 +1084,7 @@ public class GUI extends JFrame {
 	
 	public void populateVehicleTypesComboBox(){
 		vehicleTypesComboBox.removeAllItems();
-			for (String vType : controller.findAllVehicleTypes()){
+			for (String vType : controller.getAllVehicleTypes()){
 				vehicleTypesComboBox.addItem(vType);
 			}
 	}
