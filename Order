@@ -18,6 +18,7 @@ public class Order {
 		vehicle.addBookedDate(rentalDate);
 		customer.addPreviousOrder(this);
 	}
+	// Skapar en konstruktor för att skapa order.
 
 	public int getOrderNr() {
 		return orderNr;
@@ -55,6 +56,7 @@ public class Order {
 		orderPrice = Double.parseDouble(vehicle.getVehiclePrice()) * customer.getDiscountVariable();
 		return orderPrice;
 	}
+	// Metod som hämtar priset från fordonet i ordern, discountvariable från kunden i ordern, multiplicerar de två och returnerar orderpriset.
 
 	public String getRentalDate() {
 		return rentalDate;
