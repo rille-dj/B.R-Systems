@@ -17,8 +17,6 @@ public class Order {
 		setRentalDate(rentalDate);
 		setCustomer(customer);
 		setVehicle(vehicle);
-		vehicle.addBookedDate(rentalDate);
-		customer.addPreviousOrder(this);
 	}
 	// Skapar en konstruktor för att skapa order.
 
