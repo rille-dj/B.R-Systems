@@ -1,32 +1,6 @@
 package viewer;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.Document;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
-import javax.swing.JOptionPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JComboBox;
-import javax.swing.ListSelectionModel;
-
-import model.Customer;
-import model.Order;
-import model.Vehicle;
-
-import javax.swing.JTable;
-import javax.swing.JSeparator;
 
 public class GUI extends JFrame {
 
@@ -368,7 +342,6 @@ public class GUI extends JFrame {
 						&& txtEmailAddress.getText().trim().length() > 0
 						&& txtDiscount.getText().trim().length() > 0) {
 					// Om alla JTextfieldsen har fler än 0 tecken körs metoden createCustomer och den plockar alla attribut till den nya kunden från JTextFieldsen
-					ArrayList<Order> tmpList = controller.getCustomer(Integer.parseInt(txtCustomerNr.getText())).getPreviousOrders();
 					controller.createCustomer(
 							Integer.parseInt(txtCustomerNr.getText()),
 							txtFirstName.getText(), txtLastName.getText(),
@@ -377,9 +350,6 @@ public class GUI extends JFrame {
 							txtPhoneNumber.getText(),
 							txtEmailAddress.getText(),
 							Double.parseDouble(txtDiscount.getText()));
-					
-					controller.getCustomer(Integer.parseInt(txtCustomerNr.getText())).getPreviousOrders().addAll(tmpList);
-					tmpList.clear();
 					clearCustomer();
 					txtCustomerNr.setText(Integer.toString(controller.getCustomerRegistrySize()));
 					// Rensar kunddetaljer och uppdaterar txtCustomerNr till den nya storleken på kundregistret.
